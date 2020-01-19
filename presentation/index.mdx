@@ -1,0 +1,422 @@
+import { Layout, Image, Fit, Fill, Heading, Table, TableHeader, TableHeaderItem, TableBody, TableRow, TableItem } from 'spectacle';
+import { DarkSlide, CodeSlide } from './slides';
+import RegularComponent from './regular-component';
+import arex from '../assets/arex.jpg';
+import cover from '../assets/cover.jpg';
+import coverJapanese from '../assets/cover-japanese.jpg';
+import marcos from '../assets/marcos.jpg';
+import bitcoin from '../assets/bitcoin.png';
+import fixedHorizon from '../assets/fixed-horizon.png';
+import tripleBarrier from '../assets/triple-barrier.png';
+import volatility from '../assets/volatility.png';
+import tripleBarrierResult from '../assets/triple-barrier-result.png';
+import buySide from '../assets/buy-side.png';
+import sellSide from '../assets/sell-side.png';
+
+# Labelling Financial Data
+## 財務データのラベル付け
+
+---
+
+# These slides are at Connpass. So you can check them out.
+## スライドはConnpassにアップされています。 是非みてください。
+
+---
+
+# Who am I?
+## お前誰?
+
+---
+
+<Layout>
+  <Fill style={{ margin: "auto" }}>
+    <Heading>My username on Connpass is "globophobe".</Heading>
+    <Heading size={2}>Connpassのユーザ名は「globophobe」です。</Heading>
+  </Fill>
+  <Fill>
+    <Image style={{ borderRadius: "35px", marginLeft: "35px" }} src={arex} />
+  </Fill>
+</Layout>
+
+---
+
+# I make stuff with Python, Django, Vue.js and React Native. 
+## PythonやDjangoやVue.jsやReact Nativeでプログラミングしています。
+
+---
+
+# This is just for fun.
+## これはただの楽しみです。
+
+---
+
+<Layout>
+  <Fill style={{ margin: "auto" }}>
+    <Heading>Recently, I have been reading this book.</Heading>
+    <Heading size={2}>
+      最近、「Advances in Financial Machine Learning」て言う本を読んでいます。
+    </Heading>
+  </Fill>
+  <Fill>
+      <a href="https://www.amazon.co.jp/Advances-Financial-Machine-Learning-Marcos/dp/1119482089/">
+      <Image style={{ height: "96vh", borderRadius: "10px", marginLeft: "auto", marginRight: "auto" }} src={cover} />
+    </a>
+  </Fill>
+</Layout>
+
+---
+
+<Layout>
+  <Fill style={{ margin: "auto" }}>
+    <Heading>It is currently published in Japanese.</Heading>
+    <Heading size={2}>その本は現在日本語で出版されています。</Heading>
+  </Fill>
+  <Fill>
+      <a href="https://www.amazon.co.jp/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%8A%E3%83%B3%E3%82%B9%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92-%E3%83%9E%E3%83%AB%E3%82%B3%E3%82%B9%E3%83%BB%E3%83%AD%E3%83%9A%E3%82%B9%E3%83%BB%E3%83%87%E3%83%BB%E3%83%97%E3%83%A9%E3%83%89/dp/4322134637/">
+      <Image style={{ height: "96vh", borderRadius: "10px", marginLeft: "auto", marginRight: "auto" }} src={coverJapanese} />
+    </a>
+  </Fill>
+</Layout>
+
+---
+
+<Layout>
+  <Fill style={{ margin: "auto" }}>
+    <Heading size={2}>
+      The author Marcos Lopez de Prado was named <a href="https://jpm.pm-research.com/quant-of-2019">Quant of 2019</a> by the <a href="https://jpm.pm-research.com/">Journal of Portfolio Management</a>
+    </Heading>
+    <Heading size={2}>著者は、JPMにより「クォント オブ ザ イヤー」に選ばれました。</Heading>
+  </Fill>
+  <Fill>
+    <Image style={{ height: "80vh", borderRadius: "35px", marginLeft: "35px" }} src={marcos} />
+  </Fill>
+</Layout>
+
+---
+
+# According to the author, "One day in the near future, ML will dominate finance...
+## 著者によると、「近い将来、MLが金融を支配して、、、
+
+---
+
+# ...science will curtail guessing, and investing will not mean gambling."
+## 科学は推測を削減し、そしてその近く将来には、投資をする事はもうギャンブルの意味もしません。」
+
+---
+
+# In Chapter 2, volume clock sampling was discussed.
+## 第2章では財務データ構造について
+
+---
+
+# In a <a href="https://twitter.com/JacquesQuant/status/1210309445202436100">question</a> on twitter, a lead developer of the <a href="https://github.com/hudson-and-thames/mlfinlab">MLFinLab</a> package...
+
+---
+
+# ...which implements Lopez de Prado's research... 
+
+---
+
+# ...asks about the importance of volume clock sampling.
+
+---
+
+# Lopez de Prado answered, "I would use volume clock whenever possible...
+
+---
+
+# ...even if the analysis also appears to work with chronological time."
+
+---
+
+# Volume clock sampling might create a new bar every $10,000,000.
+## ドルバーは10,000,000ドルごとに新しいバーを作成します。
+
+---
+
+# When the markets are moving quickly, there will be more data points...
+## 市場が急速に動いているとき、より多くのデータポイントがあって、
+
+---
+
+# And, when markets are moving slowly, there will be fewer data points.
+## そして、市場がゆっくりと動いている場合、データポイントが少なくなります。
+
+---
+
+# Unfortunately, raw transaction data is necessary for volume clock sampling.
+## 生の取引データは、ティック、ボリューム、またはドルベースのバーを作成するために必要です。
+
+---
+
+# Usually, such data is very expensive.
+## 通常、そのようなデータは非常に高価です。
+
+---
+
+<Layout>
+  <Fill style={{ margin: "auto" }}>
+    <Heading>
+      However, it is often provided free by Bitcoin exchanges.
+    </Heading>
+    <Heading size={2}>
+      Bitmexは、Amazon S3バケットから履歴データへの無料アクセスを提供します。
+    </Heading>
+  </Fill>
+  <Fill>
+    <Image style={{ borderRadius: "35px", marginLeft: "auto", marginRight: "auto" }} src={bitcoin} />
+  </Fill>
+</Layout>
+
+---
+
+# In Chapter 3, labelling financial data is discussed.
+## 第3章では財務データ構造について
+
+---
+
+# Most quantitative methods use fixed-horizon labeling methods.
+## 
+
+---
+
+<Image style={{ height: "80vh" }} src={fixedHorizon} />
+
+---
+
+# Lopez de Prado identifies two problems with such labels.
+
+---
+
+# 1. Time-horizon, but not volatility, is fixed.
+# 2. No take profit or stop loss thresholds.
+
+---
+
+# Lopez de Prado suggests a "triple-barrier" labelling method.
+
+---
+
+<Image style={{ height: "80vh" }} src={tripleBarrier} />
+
+---
+
+# The horizontal barrier is the same as the fixed-horizon labelling method.
+
+---
+
+# However, the upper and lower barriers are calculated using the mean of the standard deviation of an exponentially moving average of returns. 
+
+---
+
+export default CodeSlide
+
+```python
+def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
+  df0 = prices.index.searchsorted(prices.index - delta)
+  df0 = df0[df0 > 0]
+  df0 = pd.Series(prices.index[df0-1],    
+           index=prices.index[prices.shape[0]-df0.shape[0] : ])
+  df0 = prices.loc[df0.index] / prices.loc[df0.values].values - 1
+  df0 = df0.ewm(span=span).std()
+  return df0
+}
+```
+
+---
+
+## The result for the Bitcoin data in question:
+
+<Image style={{ height: "65vh" }} src={volatility} />
+
+---
+
+## This is a sample of 3 events calculated using volatility:
+
+<Table>
+  <TableHeader>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>event</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>touch</TableHeaderItem>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableItem style={{ fontSize: "2vw" }}>1</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>2017-03-22 13:58:33.411609</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0.0662078</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>2017-03-23 14:14:25.540570</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem style={{ fontSize: "2vw" }}>2</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>2017-07-21 02:25:36.397497</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0.0168957</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>2017-07-21 03:04:44.531031</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem style={{ fontSize: "2vw" }}>3</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>2018-12-17 12:12:43.155227</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0.0141053</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>2018-12-17 12:12:57.062203</TableItem>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## The events are indexed with the original dataframe to become labels.
+
+<Table>
+  <TableHeader>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>event</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableItem style={{ fontSize: "2vw" }}>1</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>2017-03-22 13:58:33.411609</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0.066208</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0.019608</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem style={{ fontSize: "2vw" }}>2</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>2017-07-21 02:25:36.397497</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0.016896</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>-0.018248</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>-1</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem style={{ fontSize: "2vw" }}>3</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>2018-12-17 12:12:43.155227</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0.014105</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0.015244</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>1</TableItem>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Event 1, return was less than target when the horizontal barrier was hit.
+
+<Table>
+  <TableHeader>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>event</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableItem style={{ fontSize: "2vw" }}>1</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>2017-03-22 13:58:33.411609</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0.066208</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0.019608</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0</TableItem>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Event 2, return was negative when lower barrier was hit.
+
+<Table>
+  <TableHeader>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>event</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableItem style={{ fontSize: "2vw" }}>2</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>2017-07-21 02:25:36.397497</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0.016896</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>-0.018248</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>-1</TableItem>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Event 3, return was greater than target when upper barrier was hit.
+
+<Table>
+  <TableHeader>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>event</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableItem style={{ fontSize: "2vw" }}>3</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>2018-12-17 12:12:43.155227</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0.014105</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0.015244</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>1</TableItem>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+# Labels of either 1 or -1 indicate a trading opportunity.
+
+---
+
+# Labels of 1, buy low and sell high.
+
+<Image style={{ height: "50vh" }} src={buySide} />
+
+---
+
+# Labels of -1, sell high and buy low.
+
+<Image style={{ height: "50vh" }} src={sellSide} />
+
+---
+
+# Labels of -1 imply margin trading. For example, you have ¥10,000 and use it as margin to sell ¥20,000.
+
+---
+
+# Labels of 0 suggest there was not enough volatility for trading to be worthwhile.
+
+---
+
+# In summary:
+
+<Image style={{ height: "35vh" }} src={tripleBarrierResult} />
+
+---
+
+# In a recent <a href="https://time.com/5751190/investing-machine-learning-marcos-de-lopez-prado/">article in Time magazine</a>, Lopez de Prado states...
+
+---
+
+# ...ML should be used as a research tool, nad not as a forecasting tool.
+
+---
+
+# This precludes using Amazon Forecast.
+##
+
+---
+
+# However, let's try anyway.
+##
+
+---
+
+# That’s all. Thanks for listening.
+## 以上です。ご清聴ありがとうございます。
