@@ -1,4 +1,4 @@
-import { Layout, Image, Fit, Fill, Heading, Table, TableHeader, TableHeaderItem, TableBody, TableRow, TableItem } from 'spectacle';
+import { Layout, Image, Appear, Fit, Fill, Heading, Table, TableHeader, TableHeaderItem, TableBody, TableRow, TableItem } from 'spectacle';
 import { DarkSlide, CodeSlide } from './slides';
 import RegularComponent from './regular-component';
 import arex from '../assets/arex.jpg';
@@ -14,15 +14,15 @@ import sellSide from '../assets/sell-side.png';
 
 <Heading>
   Labelling Financial Data
-  <br />
-  <span style={{ color: "#737373" }}>with bonus Amazon Forecast.</span>
 </Heading> 
-<Heading size={2} style={{ marginBottom: "0.1em" }} >
+<Heading size={2}>
   財務データのラベル付け
 </Heading>
-<Heading size={2}>
-  <span style={{ color: "#737373", }}>おまけ、Amazon Forecast。</span>
-</Heading>
+<Appear>
+  <Heading size={2} style={{ color: "#737373" }}>
+    with bonus Amazon Forecast.
+  </Heading> 
+</Appear>
 
 ---
 
@@ -122,7 +122,7 @@ import sellSide from '../assets/sell-side.png';
 
 ---
 
-# In a <a href="https://twitter.com/JacquesQuant/status/1210309445202436100">question</a> on twitter, a lead developer of the <a href="https://github.com/hudson-and-thames/mlfinlab">MLFinLab</a> package...
+# In a <a href="https://twitter.com/JacquesQuant/status/1210309445202436100">question</a> on Twitter, a lead developer of the <a href="https://github.com/hudson-and-thames/mlfinlab">MLFinLab</a> package...
 
 ---
 
@@ -170,10 +170,10 @@ import sellSide from '../assets/sell-side.png';
 <Layout>
   <Fill style={{ margin: "auto" }}>
     <Heading>
-      However, it is often provided free by Bitcoin exchanges.
+      However, it is provided free by some Bitcoin exchanges.
     </Heading>
     <Heading size={2}>
-      Bitmexは、Amazon S3バケットから履歴データへの無料アクセスを提供します。
+      しかし、ビットコインの取引所では無料で提供されています。
     </Heading>
   </Fill>
   <Fill>
@@ -183,7 +183,8 @@ import sellSide from '../assets/sell-side.png';
 
 ---
 
-# My preference is data from the Bitmex XBTUSD perpetual future contract.
+# My preference is data for the Bitmex XBTUSD perpetual future contract.
+## 私はBitmexのXBTUSDの永続的な先物契約のデータにしました。
 
 ---
 
@@ -192,8 +193,13 @@ import sellSide from '../assets/sell-side.png';
 
 ---
 
-# Most quantitative methods use fixed-horizon labeling methods.
-## 
+# Most quantitative methods use fixed time horizon labeling methods.
+## ほとんどの定量的方法は、固定時間範囲ラベル付け方法を使用します。 
+
+---
+
+# The label is determined when price touches the vertical barrier.
+## ラベルは、価格が垂直障壁にタッチすると決定されます。
 
 ---
 
@@ -202,22 +208,21 @@ import sellSide from '../assets/sell-side.png';
 ---
 
 # Lopez de Prado identifies two problems with such labels.
+# そのようなラベルに関する2つの問題あります。
+---
+
+# 1) Time-horizon is fixed, but volatility is not.
+## 期間が固定されていますが、ボラティリティは固定されていません。
 
 ---
 
-# First, time-horizon is fixed, but volatility is not.
+# 2) The realities of trading require both stop loss and take profit thresholds.
+## 取引の現実には、ストップロスと利益の閾値の両方が必要です。
 
 ---
 
-# Second, the realities of trading require take-profit or stop-loss thresholds.
-
----
-
-# Such thresholds imply closing the trading position, either taking profits or accepting the loss.
-
----
-
-# Lopez de Prado suggests a "triple-barrier" labelling method.
+# Lopez de Prado describes a "triple-barrier" labelling method.
+## Lopez de Pradoは「トリプルバリア」ラベル付けて言う事について説明します。
 
 ---
 
@@ -225,24 +230,33 @@ import sellSide from '../assets/sell-side.png';
 
 ---
 
-# The horizontal barrier is the same as fixed-horizon labelling.
+# The vertical barrier is the same as fixed-horizon labelling.
+## 水平バリアは、固定水平ラベル付けと同じです。
 
 ---
 
-# Lopez de Prado suggests calculating the upper and lower barriers using a point estimation of volatility... 
+# The upper and lower barriers are take profit or stop loss thresholds.
+## 上限と下限の障壁は、利潤またはストップロスのしきい値です。
 
 ---
 
-# ...which is the mean of the standard deviation of an exponential moving average of returns.
-## ...現在の価格の指数移動平均を前の価格で割った標準偏差の平均です。
+# Lopez de Prado recommends calculating the upper and lower barriers with a point estimation of volatility... 
+## ボラティリティのポイント推定を計算して、そしてそのポイント推定を使って上バリアと下バリアの障壁を計算する事が勧められています。
 
 ---
 
-# Returns being defined as the current price divided by the previous price.
+# ...which is the mean of the exponentially weighted moving standard deviation of returns.
+## ...そのポイント推定はリターンの指数加重移動標準偏差の平均です。
 
 ---
 
-# As per the following code...
+# Returns being defined as the percent change in price between time T and T - 1.
+## 戻り値は時間TとT-1の間の価格の変化率として定義されています。
+
+---
+
+# As per the following function:
+## 次の関数で計算します：
 
 ---
 
@@ -250,48 +264,83 @@ export default CodeSlide
 
 ```python
 def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
-  df = prices.index.searchsorted(prices.index - delta)
-  df = df[df > 0]
-  df = pd.Series(prices.index[df0-1],    
-           index=prices.index[prices.shape[0]-df.shape[0] : ])
-  df = prices.loc[df.index] / prices.loc[df.values].values - 1
-  df = df.ewm(span=span).std()
-  return df
+    df = prices.index.searchsorted(prices.index - delta)
+    df = df[df > 0]
+    df = pd.Series(prices.index[df - 1], 
+                   index=prices.index[prices.shape[0]-df.shape[0]:])
+    df = prices.loc[df.index] / prices.loc[df.values].values - 1
+    df = df.ewm(span=span).std()
+    return df
 }
 ```
 
 ---
 
-## The standard deviation of the exponential moving average of returns:
+## The exponentially weighted moving standard deviation of returns:
+## リターンの指数加重移動標準偏差：
 
 <Image style={{ height: "65vh" }} src={volatility} />
 
 ---
 
-## This is a sample of 3 events calculated using volatility:
+# The mean of which becomes the threshold for the following function:
+## その平均が次の関数のしきい値になります。
+
+---
+
+export default CodeSlide
+
+```python
+def cusum_filter(prices, threshold):
+    events, pos, neg = [], 0, 0
+    diff = prices.diff()
+    for idx in diff.index[1:]:
+        pos = max(0, pos + diff.loc[idx])
+        neg = min(0, neg + diff.loc[idx])
+        if neg < -threshold:
+            neg = 0; events.append(idx)
+        elif pos > threshold:
+            pos = 0; events.append(idx)
+    return pd.DatetimeIndex(events)
+```
+
+---
+
+# The *cusum_filter* reduces the price series to only data points exceeding the threshold.
+## *cusum_filter* は、価格系列をしきい値を超えるデータポイントのみに減らします。
+
+---
+
+# The *cusum_filter* is described as an "[improvement] over popular market signals such as Bollinger bands. More on this later.
+## * cusum_filter *は人気のある市場信号「ボリンジャーバンド」とかに対する[改善]として説明されています。これについては後で詳しく説明します。
+---
+
+# The time of the first touch, to either upper, lower, or vertical barrier is calculated. 
+## 上部、下部、または垂直バリアへの最初のタッチの時間が計算されます。
+
+---
+
+## These are 3 "triple-barrier" touches.
+## 3つの「トリプルバリア」タッチです。
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>event</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>touch</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>1</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>2017-03-22 13:58:33.411609</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>0.0662078</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>2017-03-23 14:14:25.540570</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>2</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>2017-07-21 02:25:36.397497</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>0.0168957</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>2017-07-21 03:04:44.531031</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>3</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>2018-12-17 12:12:43.155227</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>0.0141053</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>2018-12-17 12:12:57.062203</TableItem>
@@ -301,129 +350,127 @@ def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
 
 ---
 
-## The events are indexed with the original dataframe to become labels.
+## The touches are indexed with the original dataframe to become labels.
+## タッチは元のデータフレームでインデックス付けされ、ラベルになります。
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>event</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>return</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>1</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>2017-03-22 13:58:33.411609</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>0.066208</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>0.019608</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>2</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>-1</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>2017-07-21 02:25:36.397497</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>0.016896</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>-0.018248</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>-1</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>3</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>1</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>2018-12-17 12:12:43.155227</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>0.014105</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>0.015244</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>1</TableItem>
     </TableRow>
   </TableBody>
 </Table>
 
 ---
 
-## Event "1", return was less than target when horizontal barrier, max time, was hit.
+## *Label 0* return was less than target when the vertical barrier, the max-holding period, was touched.
+## *ラベル 0 * 最大保有期間である垂直障壁に触れたときのリターンは目標を下回っていました。
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>event</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>return</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>1</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>0</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>2017-03-22 13:58:33.411609</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>0.066208</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>0.019608</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0</TableItem>
     </TableRow>
   </TableBody>
 </Table>
 
 ---
 
-## Event "2", return was negative when lower barrier, stop-loss, was hit.
+## *Label -1* return was negative when the lower barrier, stop-loss, was touched.
+## *ラベル -1 * 下の障壁であるストップロスに触れた時のリターンは負でした。
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>event</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>return</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>2</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>-1</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>2017-07-21 02:25:36.397497</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>0.016896</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>-0.018248</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>-1</TableItem>
     </TableRow>
   </TableBody>
 </Table>
 
 ---
 
-## Event "3", return was greater than target when upper barrier, take-profit, was hit.
+## *Label 1* return was greater than target when the upper barrier, take-profit, was touched.
+## *ラベル 1 * 利益が上位障壁であるテイクプロフィットに触れたときのリターンは目標を上回りました。
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>event</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "2vw" }}>return</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>3</TableItem>
+      <TableItem style={{ fontSize: "2vw" }}>1</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>2018-12-17 12:12:43.155227</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>0.014105</TableItem>
       <TableItem style={{ fontSize: "2vw" }}>0.015244</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>1</TableItem>
     </TableRow>
   </TableBody>
 </Table>
 
 ---
 
-# Labels of either "1" or "-1" indicate a trading opportunity.
+# Labels of either 1 or -1 indicate a trading opportunity.
+1または-1のラベルは、取引の機会を示します。
 
 ---
 
-# Labels of "1", buy low and sell high.
+# *Label 1*, buy low and sell high.
+## *ラベル 1*、安値で購入、高値で販売。
 
 <Image style={{ height: "50vh" }} src={buySide} />
 
 ---
 
-# Labels of "-1", sell high and buy low.
+# *Label -1*, sell high and buy low.
+## *ラベル -1*、高値で売り、低値で買います。
 
 <Image style={{ height: "50vh" }} src={sellSide} />
 
 ---
 
-# Labels of "-1" imply margin trading. Selling that which you do not have.
+# Label -1 implies margin trading. Selling that which you do not have.
+## ラベル-1は証拠金取引を意味します。 持っていないものを売る。
 
 ---
 
@@ -432,7 +479,8 @@ def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
 
 ---
 
-# Labels of 0 suggest there was not enough volatility for trading to be worthwhile.
+# Label 0 suggests not enough volatility for trading to be worthwhile.
+## ラベル0は、取引に値するボラティリティが十分でない事を示しています。
 
 ---
 
