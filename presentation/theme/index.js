@@ -4,7 +4,7 @@ const colors = {
   primary: "white",
   secondary: "#22211f", // almost black w/ blueish tint
   tertiary: "#1F2022", // complement of secondary
-  quaternary: "#808080" // pale gray
+  quaternary: "#737373" // gray
 };
 
 const marginBottom = "0.5em";

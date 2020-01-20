@@ -9,12 +9,20 @@ import bitcoin from '../assets/bitcoin.png';
 import fixedHorizon from '../assets/fixed-horizon.png';
 import tripleBarrier from '../assets/triple-barrier.png';
 import volatility from '../assets/volatility.png';
-import tripleBarrierResult from '../assets/triple-barrier-result.png';
 import buySide from '../assets/buy-side.png';
 import sellSide from '../assets/sell-side.png';
 
-# Labelling Financial Data
-## 財務データのラベル付け
+<Heading>
+  Labelling Financial Data
+  <br />
+  <span style={{ color: "#737373" }}>with bonus Amazon Forecast.</span>
+</Heading> 
+<Heading size={2} style={{ marginBottom: "0.1em" }} >
+  財務データのラベル付け
+</Heading>
+<Heading size={2}>
+  <span style={{ color: "#737373", }}>おまけ、Amazon Forecast。</span>
+</Heading>
 
 ---
 
@@ -25,6 +33,11 @@ import sellSide from '../assets/sell-side.png';
 
 # Who am I?
 ## お前誰?
+
+---
+
+# My name is Alex, and I'm from Canada 🇨🇦.
+## アレックスで、カナダから来ました。
 
 ---
 
@@ -69,7 +82,7 @@ import sellSide from '../assets/sell-side.png';
 <Layout>
   <Fill style={{ margin: "auto" }}>
     <Heading>It is currently published in Japanese.</Heading>
-    <Heading size={2}>その本は現在日本語で出版されています。</Heading>
+    <Heading size={2}>現在日本語で出版されています。</Heading>
   </Fill>
   <Fill>
       <a href="https://www.amazon.co.jp/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%8A%E3%83%B3%E3%82%B9%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92-%E3%83%9E%E3%83%AB%E3%82%B3%E3%82%B9%E3%83%BB%E3%83%AD%E3%83%9A%E3%82%B9%E3%83%BB%E3%83%87%E3%83%BB%E3%83%97%E3%83%A9%E3%83%89/dp/4322134637/">
@@ -164,9 +177,13 @@ import sellSide from '../assets/sell-side.png';
     </Heading>
   </Fill>
   <Fill>
-    <Image style={{ borderRadius: "35px", marginLeft: "auto", marginRight: "auto" }} src={bitcoin} />
+    <Image style={{ borderRadius: "35px", marginTop: "50%", marginBottom: "50%", marginLeft: "35px" }} src={bitcoin} />
   </Fill>
 </Layout>
+
+---
+
+# My preference is data from the Bitmex XBTUSD perpetual future contract.
 
 ---
 
@@ -188,8 +205,15 @@ import sellSide from '../assets/sell-side.png';
 
 ---
 
-# 1. Time-horizon, but not volatility, is fixed.
-# 2. No take profit or stop loss thresholds.
+# First, time-horizon is fixed, but volatility is not.
+
+---
+
+# Second, the realities of trading require take-profit or stop-loss thresholds.
+
+---
+
+# Such thresholds imply closing the trading position, either taking profits or accepting the loss.
 
 ---
 
@@ -201,11 +225,24 @@ import sellSide from '../assets/sell-side.png';
 
 ---
 
-# The horizontal barrier is the same as the fixed-horizon labelling method.
+# The horizontal barrier is the same as fixed-horizon labelling.
 
 ---
 
-# However, the upper and lower barriers are calculated using the mean of the standard deviation of an exponentially moving average of returns. 
+# Lopez de Prado suggests calculating the upper and lower barriers using a point estimation of volatility... 
+
+---
+
+# ...which is the mean of the standard deviation of an exponential moving average of returns.
+## ...現在の価格の指数移動平均を前の価格で割った標準偏差の平均です。
+
+---
+
+# Returns being defined as the current price divided by the previous price.
+
+---
+
+# As per the following code...
 
 ---
 
@@ -213,19 +250,19 @@ export default CodeSlide
 
 ```python
 def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
-  df0 = prices.index.searchsorted(prices.index - delta)
-  df0 = df0[df0 > 0]
-  df0 = pd.Series(prices.index[df0-1],    
-           index=prices.index[prices.shape[0]-df0.shape[0] : ])
-  df0 = prices.loc[df0.index] / prices.loc[df0.values].values - 1
-  df0 = df0.ewm(span=span).std()
-  return df0
+  df = prices.index.searchsorted(prices.index - delta)
+  df = df[df > 0]
+  df = pd.Series(prices.index[df0-1],    
+           index=prices.index[prices.shape[0]-df.shape[0] : ])
+  df = prices.loc[df.index] / prices.loc[df.values].values - 1
+  df = df.ewm(span=span).std()
+  return df
 }
 ```
 
 ---
 
-## The result for the Bitcoin data in question:
+## The standard deviation of the exponential moving average of returns:
 
 <Image style={{ height: "65vh" }} src={volatility} />
 
@@ -301,7 +338,7 @@ def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
 
 ---
 
-## Event 1, return was less than target when the horizontal barrier was hit.
+## Event "1", return was less than target when horizontal barrier, max time, was hit.
 
 <Table>
   <TableHeader>
@@ -324,7 +361,7 @@ def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
 
 ---
 
-## Event 2, return was negative when lower barrier was hit.
+## Event "2", return was negative when lower barrier, stop-loss, was hit.
 
 <Table>
   <TableHeader>
@@ -347,7 +384,7 @@ def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
 
 ---
 
-## Event 3, return was greater than target when upper barrier was hit.
+## Event "3", return was greater than target when upper barrier, take-profit, was hit.
 
 <Table>
   <TableHeader>
@@ -370,33 +407,32 @@ def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
 
 ---
 
-# Labels of either 1 or -1 indicate a trading opportunity.
+# Labels of either "1" or "-1" indicate a trading opportunity.
 
 ---
 
-# Labels of 1, buy low and sell high.
+# Labels of "1", buy low and sell high.
 
 <Image style={{ height: "50vh" }} src={buySide} />
 
 ---
 
-# Labels of -1, sell high and buy low.
+# Labels of "-1", sell high and buy low.
 
 <Image style={{ height: "50vh" }} src={sellSide} />
 
 ---
 
-# Labels of -1 imply margin trading. For example, you have ¥10,000 and use it as margin to sell ¥20,000.
+# Labels of "-1" imply margin trading. Selling that which you do not have.
+
+---
+
+# For example, using ¥100,000 as margin (collateral) to sell ¥200,000.
+## たとえば、100,000円をマージン（担保）として使用して、200,000円を販売します。
 
 ---
 
 # Labels of 0 suggest there was not enough volatility for trading to be worthwhile.
-
----
-
-# In summary:
-
-<Image style={{ height: "35vh" }} src={tripleBarrierResult} />
 
 ---
 
