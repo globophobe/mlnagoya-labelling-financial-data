@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf dist public",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.config.production.js && mkdir public && cp -r ./dist index.html ./public/",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.production.js && mkdir public && cp -r ./dist index.html _redirects ./public/",
     "lint": "eslint --ext .js,.jsx .",
     "deploy": "npm run clean & npm run build && surge -p .",
     "export": "spectacle-renderer --delay 3000",
