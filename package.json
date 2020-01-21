@@ -4,8 +4,8 @@
   "description": "ReactJS Powered Presentation Framework",
   "main": "lib/index.js",
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.config.production.js",
+    "clean": "rimraf dist public",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.production.js && mkdir public && cp -r ./dist index.html ./public/",
     "lint": "eslint --ext .js,.jsx .",
     "deploy": "npm run clean & npm run build && surge -p .",
     "export": "spectacle-renderer --delay 3000",

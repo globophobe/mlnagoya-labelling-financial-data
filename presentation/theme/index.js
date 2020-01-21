@@ -8,6 +8,7 @@ const colors = {
 };
 
 const marginBottom = "0.5em";
+const lineHeight = "1.2em !important";
 
 const theme = createTheme(
   colors,
@@ -30,28 +31,37 @@ const theme = createTheme(
     components: {
       heading: {
         h1: {
-          fontSize: "5vw",
+          fontSize: "9vmin",
+          lineHeight,
           marginBottom
         },
         h2: {
-          fontSize: "4vw",
+          fontSize: "8.5vmin",
+          lineHeight,
           marginBottom
         },
         h3: {
-          fontSize: "3vw"
+          fontSize: "8vmin",
+          lineHeight
         },
         h4: {
-          fontSize: "2vw"
+          fontSize: "7.5vmin",
+          lineHeight
         },
         h5: {
-          fontSize: "1vw"
+          fontSize: "7vmin",
+          lineHeight
         },
         h6: {
-          fontSize: "1vw"
+          fontSize: "6.5vmin",
+          lineHeight
         }
       },
+      link: {
+        color: "#111e6c"
+      },
       codePane: {
-        fontSize: "1.25rem"
+        fontSize: "3.75vmin"
       }
     }
   }

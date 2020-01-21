@@ -1,6 +1,5 @@
-import { Layout, Image, Appear, Fit, Fill, Heading, Table, TableHeader, TableHeaderItem, TableBody, TableRow, TableItem } from 'spectacle';
+import { Layout, Image, Appear, Fit, Fill, Heading, Link, Table, TableHeader, TableHeaderItem, TableBody, TableRow, TableItem } from 'spectacle';
 import { DarkSlide, CodeSlide } from './slides';
-import RegularComponent from './regular-component';
 import arex from '../assets/arex.jpg';
 import cover from '../assets/cover.jpg';
 import coverJapanese from '../assets/cover-japanese.jpg';
@@ -12,12 +11,13 @@ import volatility from '../assets/volatility.png';
 import buySide from '../assets/buy-side.png';
 import sellSide from '../assets/sell-side.png';
 
-<Heading>
+<Heading style={{ marginBottom: 0 }}>
   Labelling Financial Data
+  <br />
+  <span style={{ fontSize: "8.5vmin" }}>
+    財務データのラベル付け
+  </span>
 </Heading> 
-<Heading size={2}>
-  財務データのラベル付け
-</Heading>
 <Appear>
   <Heading size={2} style={{ color: "#737373" }}>
     with bonus Amazon Forecast.
@@ -36,7 +36,7 @@ import sellSide from '../assets/sell-side.png';
 
 ---
 
-# My name is Alex, and I'm from Canada 🇨🇦.
+# My name is Alex, and I'm from Canada 🇨🇦
 ## アレックスで、カナダから来ました。
 
 ---
@@ -44,7 +44,7 @@ import sellSide from '../assets/sell-side.png';
 <Layout>
   <Fill style={{ margin: "auto" }}>
     <Heading>My username on Connpass is "globophobe".</Heading>
-    <Heading size={2}>Connpassのユーザ名は「globophobe」です。</Heading>
+    <Heading size={4}>Connpassのユーザ名は「globophobe」です。</Heading>
   </Fill>
   <Fill>
     <Image style={{ borderRadius: "35px", marginLeft: "35px" }} src={arex} />
@@ -67,13 +67,13 @@ import sellSide from '../assets/sell-side.png';
   <Fill style={{ margin: "auto" }}>
     <Heading>Recently, I have been reading this book.</Heading>
     <Heading size={2}>
-      最近、「Advances in Financial Machine Learning」て言う本を読んでいます。
+      最近この本を読んでいます。
     </Heading>
   </Fill>
   <Fill>
-      <a href="https://www.amazon.co.jp/Advances-Financial-Machine-Learning-Marcos/dp/1119482089/">
+      <Link href="https://www.amazon.co.jp/Advances-Financial-Machine-Learning-Marcos/dp/1119482089/">
       <Image style={{ height: "96vh", borderRadius: "10px", marginLeft: "auto", marginRight: "auto" }} src={cover} />
-    </a>
+    </Link>
   </Fill>
 </Layout>
 
@@ -81,13 +81,13 @@ import sellSide from '../assets/sell-side.png';
 
 <Layout>
   <Fill style={{ margin: "auto" }}>
-    <Heading>It is currently published in Japanese.</Heading>
+    <Heading>Currently, it is published in Japanese.</Heading>
     <Heading size={2}>現在日本語で出版されています。</Heading>
   </Fill>
   <Fill>
-      <a href="https://www.amazon.co.jp/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%8A%E3%83%B3%E3%82%B9%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92-%E3%83%9E%E3%83%AB%E3%82%B3%E3%82%B9%E3%83%BB%E3%83%AD%E3%83%9A%E3%82%B9%E3%83%BB%E3%83%87%E3%83%BB%E3%83%97%E3%83%A9%E3%83%89/dp/4322134637/">
+      <Link href="https://www.amazon.co.jp/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%8A%E3%83%B3%E3%82%B9%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92-%E3%83%9E%E3%83%AB%E3%82%B3%E3%82%B9%E3%83%BB%E3%83%AD%E3%83%9A%E3%82%B9%E3%83%BB%E3%83%87%E3%83%BB%E3%83%97%E3%83%A9%E3%83%89/dp/4322134637/">
       <Image style={{ height: "96vh", borderRadius: "10px", marginLeft: "auto", marginRight: "auto" }} src={coverJapanese} />
-    </a>
+    </Link>
   </Fill>
 </Layout>
 
@@ -95,10 +95,10 @@ import sellSide from '../assets/sell-side.png';
 
 <Layout>
   <Fill style={{ margin: "auto" }}>
-    <Heading size={2}>
-      The author Marcos Lopez de Prado was named <a href="https://jpm.pm-research.com/quant-of-2019">Quant of 2019</a> by the <a href="https://jpm.pm-research.com/">Journal of Portfolio Management</a>
+    <Heading size={4}>
+      The author Marcos Lopez de Prado was named <Link href="https://jpm.pm-research.com/quant-of-2019">Quant of 2019</Link> by the <Link href="https://jpm.pm-research.com/">Journal of Portfolio Management</Link>
     </Heading>
-    <Heading size={2}>著者は、JPMにより「クォント オブ ザ イヤー」に選ばれました。</Heading>
+    <Heading size={5}>著者は、JPMにより「クォント オブ ザ イヤー」に選ばれました。</Heading>
   </Fill>
   <Fill>
     <Image style={{ height: "80vh", borderRadius: "35px", marginLeft: "35px" }} src={marcos} />
@@ -108,7 +108,7 @@ import sellSide from '../assets/sell-side.png';
 ---
 
 # According to the author, "One day in the near future, ML will dominate finance...
-## 著者によると、「近い将来、MLが金融を支配して、、、
+## 著者によると、「近い将来、MLが金融を支配して...
 
 ---
 
@@ -122,7 +122,7 @@ import sellSide from '../assets/sell-side.png';
 
 ---
 
-# In a <a href="https://twitter.com/JacquesQuant/status/1210309445202436100">question</a> on Twitter, a lead developer of the <a href="https://github.com/hudson-and-thames/mlfinlab">MLFinLab</a> package...
+# In a <Link href="https://twitter.com/JacquesQuant/status/1210309445202436100">question</Link> on Twitter, a lead developer of the <Link href="https://github.com/hudson-and-thames/mlfinlab">MLFinLab</Link> package...
 
 ---
 
@@ -142,21 +142,6 @@ import sellSide from '../assets/sell-side.png';
 
 ---
 
-# Volume clock sampling might create a new bar every $10,000,000.
-## ドルバーは10,000,000ドルごとに新しいバーを作成します。
-
----
-
-# When the markets are moving quickly, there will be more data points...
-## 市場が急速に動いているとき、より多くのデータポイントがあって、
-
----
-
-# And, when markets are moving slowly, there will be fewer data points.
-## そして、市場がゆっくりと動いている場合、データポイントが少なくなります。
-
----
-
 # Unfortunately, raw transaction data is necessary for volume clock sampling.
 ## 生の取引データは、ティック、ボリューム、またはドルベースのバーを作成するために必要です。
 
@@ -172,7 +157,7 @@ import sellSide from '../assets/sell-side.png';
     <Heading>
       However, it is provided free by some Bitcoin exchanges.
     </Heading>
-    <Heading size={2}>
+    <Heading size={3}>
       しかし、ビットコインの取引所では無料で提供されています。
     </Heading>
   </Fill>
@@ -276,10 +261,10 @@ def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
 
 ---
 
-## The exponentially weighted moving standard deviation of returns:
-## リターンの指数加重移動標準偏差：
+#### The exponentially weighted moving standard deviation of returns:
+#### リターンの指数加重移動標準偏差：
 
-<Image style={{ height: "65vh" }} src={volatility} />
+<Image style={{ height: "65vmin" }} src={volatility} />
 
 ---
 
@@ -306,8 +291,8 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# The *cusum_filter* reduces the price series to only data points exceeding the threshold.
-## *cusum_filter* は、価格系列をしきい値を超えるデータポイントのみに減らします。
+# The *cusum_filter* reduces the price series to only data points greater or less than the threshold.
+## cusum_filterは、価格系列をしきい値よりも大きいまたは小さいポイントのみに減らします。
 
 ---
 
@@ -320,30 +305,30 @@ def cusum_filter(prices, threshold):
 
 ---
 
-## These are 3 "triple-barrier" touches.
-## 3つの「トリプルバリア」タッチです。
+## These are some "triple-barrier" touches.
+<Heading size={2} style={{ marginBottom: "0.5em" }}>「トリプルバリア」タッチです。</Heading>
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>touch</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>touch</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>2017-03-22 13:58:33.411609</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0.0662078</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>2017-03-23 14:14:25.540570</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>2017-03-22 13:58:33.411609</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>0.0662078</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>2017-03-23 14:14:25.540570</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>2017-07-21 02:25:36.397497</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0.0168957</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>2017-07-21 03:04:44.531031</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>2017-07-21 02:25:36.397497</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>0.0168957</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>2017-07-21 03:04:44.531031</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>2018-12-17 12:12:43.155227</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0.0141053</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>2018-12-17 12:12:57.062203</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>2018-12-17 12:12:43.155227</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>0.0141053</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>2018-12-17 12:12:57.062203</TableItem>
     </TableRow>
   </TableBody>
 </Table>
@@ -355,29 +340,29 @@ def cusum_filter(prices, threshold):
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>label</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>0</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>2017-03-22 13:58:33.411609</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0.066208</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0.019608</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>2017-03-22 13:58:33.411609</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.066208</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.019608</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}><strong>0</strong></TableItem>
     </TableRow>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>-1</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>2017-07-21 02:25:36.397497</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0.016896</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>-0.018248</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>2017-07-21 02:25:36.397497</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.016896</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>-0.018248</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}><strong>-1</strong></TableItem>
     </TableRow>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>1</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>2018-12-17 12:12:43.155227</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0.014105</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0.015244</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>2018-12-17 12:12:43.155227</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.014105</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.015244</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}><strong>1</strong></TableItem>
     </TableRow>
   </TableBody>
 </Table>
@@ -389,17 +374,17 @@ def cusum_filter(prices, threshold):
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>label</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>0</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>2017-03-22 13:58:33.411609</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0.066208</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0.019608</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}>2017-03-22 13:58:33.411609</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}>0.066208</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}>0.019608</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}><strong>0</strong></TableItem>
     </TableRow>
   </TableBody>
 </Table>
@@ -411,17 +396,17 @@ def cusum_filter(prices, threshold):
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>label</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>-1</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>2017-07-21 02:25:36.397497</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0.016896</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>-0.018248</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}>2017-07-21 02:25:36.397497</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}>0.016896</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}>-0.018248</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}><strong>-1</strong></TableItem>
     </TableRow>
   </TableBody>
 </Table>
@@ -433,17 +418,17 @@ def cusum_filter(prices, threshold):
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>label</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>timestamp</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>target</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "2vw" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "6vmin" }}>label</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "2vw" }}>1</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>2018-12-17 12:12:43.155227</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0.014105</TableItem>
-      <TableItem style={{ fontSize: "2vw" }}>0.015244</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}>2018-12-17 12:12:43.155227</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}>0.014105</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}>0.015244</TableItem>
+      <TableItem style={{ fontSize: "5.5vmin" }}><strong>1</strong></TableItem>
     </TableRow>
   </TableBody>
 </Table>
@@ -458,33 +443,33 @@ def cusum_filter(prices, threshold):
 # *Label 1*, buy low and sell high.
 ## *ラベル 1*、安値で購入、高値で販売。
 
-<Image style={{ height: "50vh" }} src={buySide} />
+<Image style={{ height: "60vh" }} src={buySide} />
 
 ---
 
 # *Label -1*, sell high and buy low.
 ## *ラベル -1*、高値で売り、低値で買います。
 
-<Image style={{ height: "50vh" }} src={sellSide} />
+<Image style={{ height: "60vh" }} src={sellSide} />
 
 ---
 
-# Label -1 implies margin trading. Selling that which you do not have.
-## ラベル-1は証拠金取引を意味します。 持っていないものを売る。
+# *Label -1*, implies margin trading. Selling that which you do not have.
+## *ラベル -1*、証拠金取引を意味します。 持っていないものを売る。
 
 ---
 
-# For example, using ¥100,000 as margin (collateral) to sell ¥200,000.
-## たとえば、100,000円をマージン（担保）として使用して、200,000円を販売します。
+# Example, using ¥100,000 as margin (collateral) to sell ¥1,000,000.
+## たとえば、100,000円をマージン（担保）として使用して、1,000,000円を販売します。
 
 ---
 
-# Label 0 suggests not enough volatility for trading to be worthwhile.
-## ラベル0は、取引に値するボラティリティが十分でない事を示しています。
+# *Label 0*, suggests not enough volatility for trading to be worthwhile.
+## *ラベル 0*、 取引に値するボラティリティが十分でない事を示しています。
 
 ---
 
-# In a recent <a href="https://time.com/5751190/investing-machine-learning-marcos-de-lopez-prado/">article in Time magazine</a>, Lopez de Prado states...
+# In a recent <Link href="https://time.com/5751190/investing-machine-learning-marcos-de-lopez-prado/">article in Time magazine</Link>, Lopez de Prado states...
 
 ---
 
