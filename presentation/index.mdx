@@ -7,9 +7,11 @@ import marcos from '../assets/marcos.jpg';
 import bitcoin from '../assets/bitcoin.png';
 import fixedHorizon from '../assets/fixed-horizon.png';
 import tripleBarrier from '../assets/triple-barrier.png';
+import cusum from '../assets/cusum.png';
 import volatility from '../assets/volatility.png';
 import buySide from '../assets/buy-side.png';
 import sellSide from '../assets/sell-side.png';
+import tripleBarrierBinary from '../assets/triple-barrier-binary.png';
 
 <Heading style={{ marginBottom: 0 }}>
   Labelling Financial Data
@@ -292,7 +294,14 @@ def cusum_filter(prices, threshold):
 ---
 
 # The *cusum_filter* reduces the price series to only data points greater or less than the threshold.
-## cusum_filterは、価格系列をしきい値よりも大きいまたは小さいポイントのみに減らします。
+## *cusum_filter* は、価格系列をしきい値よりも大きいまたは小さいポイントのみに減らします。
+
+---
+
+# An example of the *cusum_filter* :
+## *cusum_filter* の例：
+
+<Image style={{ height: "60vh" }} src={cusum} />
 
 ---
 
@@ -469,11 +478,46 @@ def cusum_filter(prices, threshold):
 
 ---
 
+# Lopez de Prado also describes "meta-labelling".
+## 「メタラベル」て言う事はも説明しれています。
+
+---
+
+# Basically, the outcomes of the primary model become input for a secondary model.
+## 基本的に、プライマリモデルの結果は、セカンダリモデルの入力になります。
+
+---
+
+# The secondary model learns position size only, not whether to trade or not.
+## セカンダリモデルはポジションサイズのみを学習し、取引するかどうかは学習しません。 
+
+---
+
+# Lopez de Prado suggests "meta-labelling" can be particulary useful...
+## 「メタラベル」が特に有用のは...
+
+---
+
+# ...when outcomes are asymmetric, because it can help avoid large drawdowns (losses).
+## ...結果は非対称時です。大きいな損失を回避する事を助けるんからです。
+
+---
+
+# The primary model should have high recall, more true positives, and as few false positives as possible. 
+## プライマリモデルは、高い再現率しべきで、多くの真の陽性ようで、出来るだけ誤検知がすくないようです。
+
+---
+
+# The secondary model filters the false positives from the primary model.
+## セカンダリモデルは、プライマリモデルからの誤検出をフィルタリングします。
+
+---
+
 # In a recent <Link href="https://time.com/5751190/investing-machine-learning-marcos-de-lopez-prado/">article in Time magazine</Link>, Lopez de Prado states...
 
 ---
 
-# ...ML should be used as a research tool, nad not as a forecasting tool.
+# ...ML should be used as a research tool, and not as a forecasting tool.
 
 ---
 
