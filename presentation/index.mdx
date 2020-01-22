@@ -483,7 +483,7 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# Basically, the outcomes of the primary model become input for a secondary model.
+# Basically, the result of the primary model becomes input for a secondary model.
 ## 基本的に、プライマリモデルの結果は、セカンダリモデルの入力になります。
 
 ---
@@ -498,12 +498,12 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# ...when outcomes are asymmetric, because it can help avoid large drawdowns (losses).
+# ...when outcomes are asymmetric, as it can help avoid large drawdowns.
 ## ...結果は非対称時です。大きいな損失を回避する事を助けるんからです。
 
 ---
 
-# The primary model should have high recall, more true positives, and as few false positives as possible. 
+# The primary model should have high recall, many true positives, and as few false positives as possible. 
 ## プライマリモデルは、高い再現率しべきで、多くの真の陽性ようで、出来るだけ誤検知がすくないようです。
 
 ---
@@ -513,11 +513,29 @@ def cusum_filter(prices, threshold):
 
 ---
 
+# Intuitively, it is preferable to do nothing (False Negative)... 
+
+---
+
+# ...than be exposed to a loss (False Positive).
+
+---
+
+# Significantly, the primary model could be anything, an ML model, a fundamental model...
+
+
+---
+
+# ...or even a monkey deciding trades by throwing darts.
+
+
+---
+
 # In a recent <Link href="https://time.com/5751190/investing-machine-learning-marcos-de-lopez-prado/">article in Time magazine</Link>, Lopez de Prado states...
 
 ---
 
-# ...ML should be used as a research tool, and not as a forecasting tool.
+# ...ML should be used [primarily] as a research tool, and not as a forecasting tool.
 
 ---
 
