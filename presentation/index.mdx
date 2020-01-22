@@ -11,7 +11,8 @@ import cusum from '../assets/cusum.png';
 import volatility from '../assets/volatility.png';
 import buySide from '../assets/buy-side.png';
 import sellSide from '../assets/sell-side.png';
-import tripleBarrierBinary from '../assets/triple-barrier-binary.png';
+import primaryCM from '../assets/primary-confusion-matrix.png';
+import secondaryCM from '../assets/secondary-confusion-matrix.png';
 
 <Heading style={{ marginBottom: 0 }}>
   Labelling Financial Data
@@ -258,7 +259,6 @@ def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
     df = prices.loc[df.index] / prices.loc[df.values].values - 1
     df = df.ewm(span=span).std()
     return df
-}
 ```
 
 ---
@@ -478,8 +478,8 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# Lopez de Prado also describes "meta-labelling".
-## 「メタラベル」て言う事はも説明しれています。
+# Lopez de Prado also suggests "meta-labelling".
+## 「メタラベル」て言う事はも勧められています。
 
 ---
 
@@ -488,12 +488,7 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# The secondary model learns position size only, not whether to trade or not.
-## セカンダリモデルはポジションサイズのみを学習し、取引するかどうかは学習しません。 
-
----
-
-# Lopez de Prado suggests "meta-labelling" can be particulary useful...
+# Lopez de Prado says "meta-labelling" can be particulary useful...
 ## 「メタラベル」が特に有用のは...
 
 ---
@@ -510,6 +505,138 @@ def cusum_filter(prices, threshold):
 
 # The secondary model filters the false positives from the primary model.
 ## セカンダリモデルは、プライマリモデルからの誤検出をフィルタリングします。
+
+---
+
+# This is a simple example:
+##
+
+---
+
+export default CodeSlide
+
+
+```python
+from sklearn.linear_model import LogisticRegression
+from imblearn.over_sampling import SMOTE
+```
+
+```python
+split = int(len(df) * .7)
+x = df[["close", "volume"]].values
+y = df[["label"]].values
+x_train, y_train = x[:split], y[:split]
+x_test, y_test = x[split:], y[:split]
+```
+
+```python
+sm = SMOTE()
+x_train_resample, y_train_resample = sm.fit_sample(x_train, y_train)
+```
+
+```python
+primary_model = LogisticRegression().fit(x_train_res, y_train_res)
+y_pred = primary_model.predict(x_test)
+```
+
+---
+
+export default CodeSlide
+
+```python
+def true_meta_labels(y_pred, y_test):
+    """Labels were 0, 1, -1. Encode correctly predicted labels of 1 or -1 as true positive."""
+    bin_label = np.zeros_like(y_pred)
+    for i in range(y_pred.shape[0]):
+        if y_pred[i] != 0 and y_pred[i] * y_test[i] > 0:
+            bin_label[i] = 1  # True Positive
+    return bin_label
+```
+
+---
+
+# There are 859 false positives, 0 false negatives.
+
+
+<Image src={primaryCM} />
+
+---
+
+# Primary model
+
+<Table>
+  <TableHeader>
+    <TableHeaderItem />
+    <TableHeaderItem>precision</TableHeaderItem>
+    <TableHeaderItem>recall</TableHeaderItem>
+    <TableHeaderItem>f1-score</TableHeaderItem>
+    <TableHeaderItem>support</TableHeaderItem>
+  </TableHeader>
+  <TableBody>
+    <TableRow />
+    <TableRow>
+      <TableItem>0.0</TableItem>
+      <TableItem>1.00</TableItem>
+      <TableItem>0.51</TableItem>
+      <TableItem><strong>0.68</strong></TableItem>
+      <TableItem>1752</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem>1.0</TableItem>
+      <TableItem>0.32</TableItem>
+      <TableItem>1.00</TableItem>
+      <TableItem>0.48</TableItem>
+      <TableItem>396</TableItem>
+    </TableRow>
+    <TableRow />
+    <TableRow>
+      <TableItem>accuracy</TableItem>
+      <TableItem />
+      <TableItem />
+      <TableItem>0.60</TableItem>
+      <TableItem>2148</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem>macro avg</TableItem>
+      <TableItem>0.66</TableItem>
+      <TableItem>0.75</TableItem>
+      <TableItem>0.58</TableItem>
+      <TableItem>2148</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem>weighted avg</TableItem>
+      <TableItem>0.87</TableItem>
+      <TableItem>0.60</TableItem>
+      <TableItem>0.64</TableItem>
+      <TableItem>2148</TableItem>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+export default CodeSlide
+
+```python
+# generate predictions for training
+y_train_pred = clf.predict(x_train) 
+```
+
+```python
+# add predictions to features 
+x_train_meta = np.hstack([y_train_pred[:, None], x_train])
+x_test_meta = np.hstack([y_pred[:, None], x_test])
+# generate true meta-labels
+y_train_meta = true_meta_labels(y_train_pred, y_train)
+```
+
+
+```python
+sm = SMOTE()
+x_train_meta_res, y_train_meta_res = sm.fit_sample(x_train_meta, y_train_meta)
+secondary_model = LogisticRegression().fit(x_train_meta_res, y_train_meta_res)
+y_pred_meta = secondary_model.predict(x_test_meta)
+```
 
 ---
 
