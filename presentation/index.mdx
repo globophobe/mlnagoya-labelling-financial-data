@@ -555,7 +555,7 @@ def true_meta_labels(y_pred, y_test):
 
 ---
 
-# There are 859 false positives, 0 false negatives.
+# 859 false positives, 0 false negatives.
 
 
 <Image src={primaryCM} />
@@ -577,7 +577,7 @@ def true_meta_labels(y_pred, y_test):
     <TableRow>
       <TableItem>0.0</TableItem>
       <TableItem>1.00</TableItem>
-      <TableItem>0.51</TableItem>
+      <TableItem><strong>0.51</strong></TableItem>
       <TableItem><strong>0.68</strong></TableItem>
       <TableItem>1752</TableItem>
     </TableRow>
@@ -585,7 +585,7 @@ def true_meta_labels(y_pred, y_test):
       <TableItem>1.0</TableItem>
       <TableItem>0.32</TableItem>
       <TableItem>1.00</TableItem>
-      <TableItem>0.48</TableItem>
+      <TableItem><strong>0.48</strong></TableItem>
       <TableItem>396</TableItem>
     </TableRow>
     <TableRow />
@@ -593,21 +593,21 @@ def true_meta_labels(y_pred, y_test):
       <TableItem>accuracy</TableItem>
       <TableItem />
       <TableItem />
-      <TableItem>0.60</TableItem>
+      <TableItem><strong>0.60</strong></TableItem>
       <TableItem>2148</TableItem>
     </TableRow>
     <TableRow>
       <TableItem>macro avg</TableItem>
       <TableItem>0.66</TableItem>
       <TableItem>0.75</TableItem>
-      <TableItem>0.58</TableItem>
+      <TableItem><strong>0.58</strong></TableItem>
       <TableItem>2148</TableItem>
     </TableRow>
     <TableRow>
       <TableItem>weighted avg</TableItem>
       <TableItem>0.87</TableItem>
       <TableItem>0.60</TableItem>
-      <TableItem>0.64</TableItem>
+      <TableItem><strong>0.64</strong></TableItem>
       <TableItem>2148</TableItem>
     </TableRow>
   </TableBody>
@@ -618,25 +618,32 @@ def true_meta_labels(y_pred, y_test):
 export default CodeSlide
 
 ```python
-# generate predictions for training
-y_train_pred = clf.predict(x_train) 
+y_train_pred = primary_model.predict(x_train) 
 ```
 
 ```python
-# add predictions to features 
 x_train_meta = np.hstack([y_train_pred[:, None], x_train])
 x_test_meta = np.hstack([y_pred[:, None], x_test])
-# generate true meta-labels
 y_train_meta = true_meta_labels(y_train_pred, y_train)
 ```
 
-
 ```python
 sm = SMOTE()
-x_train_meta_res, y_train_meta_res = sm.fit_sample(x_train_meta, y_train_meta)
-secondary_model = LogisticRegression().fit(x_train_meta_res, y_train_meta_res)
+x_train_meta_res, y_train_meta_res = sm.fit_sample(
+    x_train_meta, y_train_meta
+)
+secondary_model = LogisticRegression().fit(
+    x_train_meta_r, y_train_meta_res
+  )
 y_pred_meta = secondary_model.predict(x_test_meta)
 ```
+
+---
+
+# Now, 472 false positives, 132 false negatives.
+
+
+<Image src={secondaryCM} />
 
 ---
 
