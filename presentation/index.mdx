@@ -469,8 +469,8 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# Predictions from a primary model become input for a secondary model.
-## プライマリモデルの予測は、セカンダリモデルの入力になります。
+# Output from a primary model become input for a secondary model.
+## プライマリモデルの出力は、セカンダリモデルの入力になります。
 
 ---
 
@@ -499,7 +499,8 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# XBTUSD, $10000000 volume bars
+### Data is close price and volume, XBTUSD $10000000 volume bars:
+### データはXBTUSDの終値とボリューム、$ 10000000のボリュームバー：
 
 <Table>
   <TableHeader>
@@ -633,7 +634,7 @@ y_pred_meta = secondary_model.predict(x_test_meta)
 
 ---
 
-# Meta-labelling reduces the number of false positives assymetrically to an increase in the number of false negatives.
+# Meta-labelling reduces number of false positives assymetrically to an increase in number of false negatives.
 ## メタラベルは、 偽陽性の数が偽陰性の数の増え非対称的に減ります。	
 
 ---
