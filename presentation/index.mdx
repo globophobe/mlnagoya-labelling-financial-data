@@ -84,7 +84,7 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 <Layout>
   <Fill style={{ margin: "auto" }}>
     <Heading>Currently, it is published in Japanese.</Heading>
-    <Heading size={2}>現在日本語で出版されています。</Heading>
+    <Heading size={2}>現在、日本語で出版されています。</Heading>
   </Fill>
   <Fill>
       <Link href="https://www.amazon.co.jp/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%8A%E3%83%B3%E3%82%B9%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92-%E3%83%9E%E3%83%AB%E3%82%B3%E3%82%B9%E3%83%BB%E3%83%AD%E3%83%9A%E3%82%B9%E3%83%BB%E3%83%87%E3%83%BB%E3%83%97%E3%83%A9%E3%83%89/dp/4322134637/">
@@ -98,7 +98,7 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 <Layout>
   <Fill style={{ margin: "auto" }}>
     <Heading size={4}>
-      The author Marcos Lopez de Prado was named <Link href="https://jpm.pm-research.com/quant-of-2019">Quant of 2019</Link> by the <Link href="https://jpm.pm-research.com/">Journal of Portfolio Management</Link>
+      The author Marcos Lopez de Prado was named <Link href="https://jpm.pm-research.com/quant-of-2019">Quant of 2019</Link> by the <Link href="https://jpm.pm-research.com/">Journal of Portfolio Management</Link>.
     </Heading>
     <Heading size={5}>著者は、JPMにより「クォント オブ ザ イヤー」に選ばれました。</Heading>
   </Fill>
@@ -109,43 +109,28 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 
 ---
 
-# According to the author, "One day in the near future, ML will dominate finance...
-## 著者によると、「近い将来、MLが金融を支配して...
+# According to Lopez de Prado, "One day in the near future, ML will dominate finance...
+## 「近い将来、MLが金融を支配して...
 
 ---
 
 # ...science will curtail guessing, and investing will not mean gambling."
-## 科学は推測を削減し、そしてその近く将来には、投資をする事はもうギャンブルの意味もしません。」
+## 科学は推測を削減するはずで、近く将来には、投資をする事はもうギャンブルの意味もしません。
 
 ---
 
-# In Chapter 2, volume clock sampling was discussed.
-## 第2章では財務データ構造について
+# In Chapter 2, volume-based sampling was discussed.
+## 第2章では、ボリュームベースのサンプリングについて説明されていました。
 
 ---
 
-# In a <Link href="https://twitter.com/JacquesQuant/status/1210309445202436100">question</Link> on Twitter, a lead developer of the <Link href="https://github.com/hudson-and-thames/mlfinlab">MLFinLab</Link> package...
+# Volume-based sampling results in data that is closer to independent and identically distributed (IID) normal.
+## ボリュームベースのサンプリングにより、独立した同一分布（IID）正規に近いデータが得られます。
 
 ---
 
-# ...which implements Lopez de Prado's research... 
-
----
-
-# ...asks about the importance of volume clock sampling.
-
----
-
-# Lopez de Prado answered, "I would use volume clock whenever possible...
-
----
-
-# ...even if the analysis also appears to work with chronological time."
-
----
-
-# Unfortunately, raw transaction data is necessary for volume clock sampling.
-## 生の取引データは、ティック、ボリューム、またはドルベースのバーを作成するために必要です。
+# However, raw transaction data is necessary for volume-based sampling.
+## しかし、ボリュームベースのサンプリングには生のトランザクションデータが必要です。
 
 ---
 
@@ -209,7 +194,7 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 ---
 
 # Lopez de Prado describes a "triple-barrier" labelling method.
-## Lopez de Pradoは「トリプルバリア」ラベル付けて言う事について説明します。
+## 「トリプルバリア」て言う金融データラベル付けについてが説明されています。
 
 ---
 
@@ -218,12 +203,12 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 ---
 
 # The vertical barrier is the same as fixed-horizon labelling.
-## 水平バリアは、固定水平ラベル付けと同じです。
+## 垂直バリアは、固定水平ラベル付けと同じです。
 
 ---
 
-# The upper and lower barriers are take profit or stop loss thresholds.
-## 上限と下限の障壁は、利潤またはストップロスのしきい値です。
+# The upper and lower barriers are initial take profit or stop loss thresholds.
+## 上限と下限の障壁は、最小の利潤またはストップロスのしきい値です。
 
 ---
 
@@ -251,13 +236,16 @@ export default CodeSlide
 
 ```python
 def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
-    df = prices.index.searchsorted(prices.index - delta)
-    df = df[df > 0]
-    df = pd.Series(prices.index[df - 1], 
-                   index=prices.index[prices.shape[0]-df.shape[0]:])
-    df = prices.loc[df.index] / prices.loc[df.values].values - 1
-    df = df.ewm(span=span).std()
-    return df
+		"""Estimate volatality with exponentially weighted moving standard deviation of returns."""
+		df = prices.index.searchsorted(prices.index - delta)
+		df = df[df > 0]
+		df = pd.Series(
+				prices.index[df - 1], 
+				index=prices.index[prices.shape[0]-df.shape[0]:]
+		)
+		df = prices.loc[df.index] / prices.loc[df.values].values - 1
+		df = df.ewm(span=span).std()
+		return df
 ```
 
 ---
@@ -297,15 +285,14 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# An example of the *cusum_filter* :
-## *cusum_filter* の例：
-
-<Image style={{ height: "60vh" }} src={cusum} />
+# The *cusum_filter* is described as an "[improvement] over many popular financial indicators such as Bollinger bands... 
+## * cusum_filter *は人気のある市場信号「ボリンジャーバンド」とかに対する[改善]として説明されています。
 
 ---
 
-# The *cusum_filter* is described as an "[improvement] over popular market signals such as Bollinger bands, as it resets at each sample.
-## * cusum_filter *は人気のある市場信号「ボリンジャーバンド」とかに対する[改善]として説明されています。これについては後で詳しく説明します。
+# ...as it resets at each sample, so as to not to fluctuate over a threshold.
+## 各サンプルでリセットされます。このように、しきい値の近くを超えて変動しないです。
+
 ---
 
 # The time of the first touch, to either upper, lower, or vertical barrier is calculated. 
@@ -421,8 +408,8 @@ def cusum_filter(prices, threshold):
 
 ---
 
-## *Label 1* return was greater than target when the upper barrier, take-profit, was touched.
-## *ラベル 1 * 利益が上位障壁であるテイクプロフィットに触れたときのリターンは目標を上回りました。
+## *Label 1* return was greater than target when the upper barrier, initial take-profit, was touched.
+## *ラベル 1 * 上の障壁である最小の利潤に触れた時のリターンはは目標を上回りました。
 
 <Table>
   <TableHeader>
@@ -443,31 +430,31 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# Labels of either 1 or -1 indicate a trading opportunity.
-1または-1のラベルは、取引の機会を示します。
+# *Label 1* and *Label -1* indicate a trading opportunity.
+## *ラベル 1* または *ラベル -1* は、取引の機会があるの意味します。
 
 ---
 
-# *Label 1*, buy low and sell high.
-## *ラベル 1*、安値で購入、高値で販売。
+# Buy low and sell high.
+## 安値で購入、高値で販売。
 
 <Image style={{ height: "60vh" }} src={buySide} />
 
 ---
 
-# *Label -1*, sell high and buy low.
-## *ラベル -1*、高値で売り、低値で買います。
+# Sell high and buy low.
+## 高値で売り、低値で買います。
 
 <Image style={{ height: "60vh" }} src={sellSide} />
 
 ---
 
-# *Label -1*, implies margin trading. Selling that which you do not have.
-## *ラベル -1*、証拠金取引を意味します。 持っていないものを売る。
+# Selling high and buying low implies selling short on margin.
+## 証拠金で空売りの取引を意味します。持っていないものを売る。
 
 ---
 
-# Example, using ¥100,000 as margin (collateral) to sell ¥1,000,000.
+# For example, using ¥100,000 as margin (collateral) to sell ¥1,000,000.
 ## たとえば、100,000円をマージン（担保）として使用して、1,000,000円を販売します。
 
 ---
@@ -482,8 +469,8 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# Basically, the result of a primary model becomes input for a secondary model.
-## 基本的に、プライマリモデルの結果は、セカンダリモデルの入力になります。
+# Predictions from a primary model become input for a secondary model.
+## プライマリモデルの予測は、セカンダリモデルの入力になります。
 
 ---
 
@@ -509,6 +496,50 @@ def cusum_filter(prices, threshold):
 
 # The following is a simplified example:
 ## 次は単純化したの例です：
+
+---
+
+# XBTUSD, $10000000 volume bars
+
+<Table>
+  <TableHeader>
+    <TableHeaderItem>timestamp</TableHeaderItem>
+    <TableHeaderItem>close</TableHeaderItem>
+    <TableHeaderItem>volume</TableHeaderItem>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableItem>...</TableItem>
+      <TableItem>...</TableItem>
+      <TableItem>...</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem>2020-01-14 18:13:02.951683</TableItem>
+      <TableItem>8858.5</TableItem>
+      <TableItem>10001522</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem>2020-01-15 01:07:18.109534</TableItem>
+      <TableItem>8730.0</TableItem>
+      <TableItem>10000005</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem>2020-01-15 04:06:15.848101</TableItem>
+      <TableItem>8651.0</TableItem>
+      <TableItem>10000340</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem>2020-01-15 13:57:39.592160</TableItem>
+      <TableItem>8878.0</TableItem>
+      <TableItem>10000444</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem>2020-01-15 16:03:29.038104</TableItem>
+      <TableItem>8725.5</TableItem>
+      <TableItem>10145705</TableItem>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ---
 
@@ -745,20 +776,22 @@ y_pred_meta = secondary_model.predict(x_test_meta)
 ---
 
 # In a recent <Link href="https://time.com/5751190/investing-machine-learning-marcos-de-lopez-prado/">article in Time magazine</Link>, Lopez de Prado states...
+## タイム誌の最近の記事で、ロペス・デ・プラドは...次の事を伝えました...
 
 ---
 
-# ...ML should be used [primarily] as a research tool, and not as a forecasting tool.
+# ...[for financial data] ML should be used as a research tool, and not as a forecasting tool.
+## [財務データの場合] MLは、予測ツールとしてではなく、調査ツールとして使用するべきです。
 
 ---
 
 # This precludes using Amazon Forecast.
-##
+## ビットコインの将来の値段を予測してみるためにAmazon Forecastを使用しない方が良いです。
 
 ---
 
 # However, let's try anyway.
-##
+## しかし、とにかく試してみましょう。
 
 ---
 
