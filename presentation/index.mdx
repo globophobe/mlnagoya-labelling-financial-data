@@ -13,6 +13,7 @@ import buySide from '../assets/buy-side.png';
 import sellSide from '../assets/sell-side.png';
 import primaryCM from '../assets/primary-confusion-matrix.png';
 import secondaryCM from '../assets/secondary-confusion-matrix.png';
+import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 
 <Heading style={{ marginBottom: 0 }}>
   Labelling Financial Data
@@ -69,12 +70,10 @@ import secondaryCM from '../assets/secondary-confusion-matrix.png';
 <Layout>
   <Fill style={{ margin: "auto" }}>
     <Heading>Recently, I have been reading this book.</Heading>
-    <Heading size={2}>
-      最近この本を読んでいます。
-    </Heading>
+    <Heading size={2}>最近この本を読んでいます。</Heading>
   </Fill>
   <Fill>
-      <Link href="https://www.amazon.co.jp/Advances-Financial-Machine-Learning-Marcos/dp/1119482089/">
+    <Link href="https://www.amazon.co.jp/Advances-Financial-Machine-Learning-Marcos/dp/1119482089/">
       <Image style={{ height: "96vh", borderRadius: "10px", marginLeft: "auto", marginRight: "auto" }} src={cover} />
     </Link>
   </Fill>
@@ -266,7 +265,7 @@ def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
 #### The exponentially weighted moving standard deviation of returns:
 #### リターンの指数加重移動標準偏差：
 
-<Image style={{ height: "65vmin" }} src={volatility} />
+<Image style={{ height: "50vmin" }} src={volatility} />
 
 ---
 
@@ -305,7 +304,7 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# The *cusum_filter* is described as an "[improvement] over popular market signals such as Bollinger bands. More on this later.
+# The *cusum_filter* is described as an "[improvement] over popular market signals such as Bollinger bands, as it resets at each sample.
 ## * cusum_filter *は人気のある市場信号「ボリンジャーバンド」とかに対する[改善]として説明されています。これについては後で詳しく説明します。
 ---
 
@@ -478,17 +477,17 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# Lopez de Prado also suggests "meta-labelling".
-## 「メタラベル」て言う事はも勧められています。
+# Lopez de Prado also discusses "meta-labelling".
+## 「メタラベル」て言う事はも説明さられています。
 
 ---
 
-# Basically, the result of the primary model becomes input for a secondary model.
+# Basically, the result of a primary model becomes input for a secondary model.
 ## 基本的に、プライマリモデルの結果は、セカンダリモデルの入力になります。
 
 ---
 
-# Lopez de Prado says "meta-labelling" can be particulary useful...
+# Lopez de Prado says meta-labelling can be particulary useful...
 ## 「メタラベル」が特に有用のは...
 
 ---
@@ -508,8 +507,8 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# This is a simple example:
-##
+# The following is a simplified example:
+## 次は単純化したの例です：
 
 ---
 
@@ -522,6 +521,7 @@ from imblearn.over_sampling import SMOTE
 ```
 
 ```python
+# Split train and test data.
 split = int(len(df) * .7)
 x = df[["close", "volume"]].values
 y = df[["label"]].values
@@ -530,11 +530,8 @@ x_test, y_test = x[split:], y[:split]
 ```
 
 ```python
-sm = SMOTE()
-x_train_resample, y_train_resample = sm.fit_sample(x_train, y_train)
-```
-
-```python
+# Resample using SMOTE, and fit.
+x_train_res, y_train_res = SMOTE().fit_sample(x_train, y_train)
 primary_model = LogisticRegression().fit(x_train_res, y_train_res)
 y_pred = primary_model.predict(x_test)
 ```
@@ -545,24 +542,72 @@ export default CodeSlide
 
 ```python
 def true_meta_labels(y_pred, y_test):
-    """Labels were 0, 1, -1. Encode correctly predicted labels of 1 or -1 as true positive."""
+    """Labels were 0, 1, and -1. Correctly predicted labels of 1 or -1 will be 1."""
     bin_label = np.zeros_like(y_pred)
     for i in range(y_pred.shape[0]):
-        if y_pred[i] != 0 and y_pred[i] * y_test[i] > 0:
+        if y_pred[i] != 0 and (y_pred[i] * y_test[i]) > 0:
             bin_label[i] = 1  # True Positive
     return bin_label
 ```
 
+```python
+true_binary = true_binary_label(y_pred, y_test)
+cm = confusion_matrix(true_binary, y_pred != 0)
+```
+
 ---
 
-# 859 false positives, 0 false negatives.
+# Primary model: 
+
+**859 false positives (FP), 0 false negatives (FN)**
 
 
 <Image src={primaryCM} />
 
 ---
 
-# Primary model
+# Add predictions from primary model to training data of the secondary model.
+## プライマリモデルの予測をセカンダリモデルのトレーニングデータに追加します。
+
+---
+
+export default CodeSlide
+
+```python
+# Predictions added as feature to secondary model.
+y_train_pred = primary_model.predict(x_train) 
+x_train_meta = np.hstack([y_train_pred[:, None], x_train])
+x_test_meta = np.hstack([y_pred[:, None], x_test])
+y_train_meta = true_meta_labels(y_train_pred, y_train)
+```
+
+```python
+# Resample using SMOTE, and fit.
+x_train_meta_res, y_train_meta_res = SMOTE().fit_sample(
+    x_train_meta, y_train_meta
+)
+secondary_model = LogisticRegression().fit(
+    x_train_meta_res, y_train_meta_res
+)
+y_pred_meta = secondary_model.predict(x_test_meta)
+```
+
+---
+
+# Secondary model: 
+
+**472 false positives (FP), 132 false negatives (FN)**
+
+<Image src={secondaryCM} />
+
+---
+
+# Meta-labelling reduces the number of false positives assymetrically to an increase in the number of false negatives.
+## メタラベルは、 偽陽性の数が偽陰性の数の増え非対称的に減ります。	
+
+---
+
+# Classification report, primary model:
 
 <Table>
   <TableHeader>
@@ -573,41 +618,45 @@ def true_meta_labels(y_pred, y_test):
     <TableHeaderItem>support</TableHeaderItem>
   </TableHeader>
   <TableBody>
-    <TableRow />
+    <TableRow>
+      <TableItem>&nbsp;</TableItem>
+    </TableRow>
     <TableRow>
       <TableItem>0.0</TableItem>
       <TableItem>1.00</TableItem>
-      <TableItem><strong>0.51</strong></TableItem>
-      <TableItem><strong>0.68</strong></TableItem>
-      <TableItem>1752</TableItem>
+      <TableItem>0.52</TableItem>
+      <TableItem><strong>0.69</strong></TableItem>
+      <TableItem>1756</TableItem>
     </TableRow>
     <TableRow>
       <TableItem>1.0</TableItem>
       <TableItem>0.32</TableItem>
       <TableItem>1.00</TableItem>
       <TableItem><strong>0.48</strong></TableItem>
-      <TableItem>396</TableItem>
+      <TableItem>392</TableItem>
     </TableRow>
-    <TableRow />
+    <TableRow>
+      <TableItem>&nbsp;</TableItem>
+    </TableRow>
     <TableRow>
       <TableItem>accuracy</TableItem>
       <TableItem />
       <TableItem />
-      <TableItem><strong>0.60</strong></TableItem>
+      <TableItem>0.61</TableItem>
       <TableItem>2148</TableItem>
     </TableRow>
     <TableRow>
       <TableItem>macro avg</TableItem>
       <TableItem>0.66</TableItem>
-      <TableItem>0.75</TableItem>
-      <TableItem><strong>0.58</strong></TableItem>
+      <TableItem>0.76</TableItem>
+      <TableItem>0.59</TableItem>
       <TableItem>2148</TableItem>
     </TableRow>
     <TableRow>
       <TableItem>weighted avg</TableItem>
-      <TableItem>0.87</TableItem>
-      <TableItem>0.60</TableItem>
-      <TableItem><strong>0.64</strong></TableItem>
+      <TableItem>0.88</TableItem>
+      <TableItem>0.61</TableItem>
+      <TableItem>0.65</TableItem>
       <TableItem>2148</TableItem>
     </TableRow>
   </TableBody>
@@ -615,53 +664,83 @@ def true_meta_labels(y_pred, y_test):
 
 ---
 
-export default CodeSlide
+# Secondary model, f1-score is improved:
 
-```python
-y_train_pred = primary_model.predict(x_train) 
-```
-
-```python
-x_train_meta = np.hstack([y_train_pred[:, None], x_train])
-x_test_meta = np.hstack([y_pred[:, None], x_test])
-y_train_meta = true_meta_labels(y_train_pred, y_train)
-```
-
-```python
-sm = SMOTE()
-x_train_meta_res, y_train_meta_res = sm.fit_sample(
-    x_train_meta, y_train_meta
-)
-secondary_model = LogisticRegression().fit(
-    x_train_meta_r, y_train_meta_res
-  )
-y_pred_meta = secondary_model.predict(x_test_meta)
-```
+<Table>
+  <TableHeader>
+    <TableHeaderItem />
+    <TableHeaderItem>precision</TableHeaderItem>
+    <TableHeaderItem>recall</TableHeaderItem>
+    <TableHeaderItem>f1-score</TableHeaderItem>
+    <TableHeaderItem>support</TableHeaderItem>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableItem>&nbsp;</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem>0.0</TableItem>
+      <TableItem>0.91</TableItem>
+      <TableItem>0.73</TableItem>
+      <TableItem><strong>0.81</strong></TableItem>
+      <TableItem>1756</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem>1.0</TableItem>
+      <TableItem>0.36</TableItem>
+      <TableItem>0.67</TableItem>
+      <TableItem><strong>0.47</strong></TableItem>
+      <TableItem>392</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem>&nbsp;</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem>accuracy</TableItem>
+      <TableItem />
+      <TableItem />
+      <TableItem>0.72</TableItem>
+      <TableItem>2148</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem>macro avg</TableItem>
+      <TableItem>0.63</TableItem>
+      <TableItem>0.70</TableItem>
+      <TableItem>0.64</TableItem>
+      <TableItem>2148</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem>weighted avg</TableItem>
+      <TableItem>0.81</TableItem>
+      <TableItem>0.72</TableItem>
+      <TableItem>0.75</TableItem>
+      <TableItem>2148</TableItem>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ---
 
-# Now, 472 false positives, 132 false negatives.
-
-
-<Image src={secondaryCM} />
+# Intuitively, it may be preferable to do nothing (FN), than be exposed to a loss (FP).
+## 直感的に、損失（FP）にさらされるよりも、何もしない（FN）方が望ましい場合があります。
 
 ---
 
-# Intuitively, it is preferable to do nothing (False Negative)... 
-
----
-
-# ...than be exposed to a loss (False Positive).
-
----
-
-# Significantly, the primary model could be anything, an ML model, a fundamental model...
+### Lopez de Prado emphasizes that the primary model need not be an ML model. It could be the decisions of a discretionary trader.
+### プライマリモデルはMLモデルでわなくても良い事を強調されています。プライマリモデルは裁量的トレーダーの取引判断の可能性もあります。
 
 
 ---
 
-# ...or even a monkey deciding trades by throwing darts.
-
+<Layout>
+  <Fill style={{ margin: "auto" }}>
+    <Heading size={4}>He doesn't say it, but the primary model could even be a monkey throwing darts. </Heading>
+    <Heading size={4}>彼は言わない事ですけれど、プライマリモデルはダーツを投げる猿の可能性もあります。</Heading>
+  </Fill>
+  <Fill>
+    <Image style={{ borderRadius: "35px" }} src={monkeyThrowDarts} />
+  </Fill>
+</Layout>
 
 ---
 

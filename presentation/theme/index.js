@@ -42,19 +42,23 @@ const theme = createTheme(
         },
         h3: {
           fontSize: "8vmin",
-          lineHeight
+          lineHeight,
+          marginBottom
         },
         h4: {
           fontSize: "7.5vmin",
-          lineHeight
+          lineHeight,
+          marginBottom
         },
         h5: {
           fontSize: "7vmin",
-          lineHeight
+          lineHeight,
+          marginBottom
         },
         h6: {
           fontSize: "6.5vmin",
-          lineHeight
+          lineHeight,
+          marginBottom
         }
       },
       link: {
