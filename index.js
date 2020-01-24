@@ -27,12 +27,7 @@ const creeperTransition = (transitioning, forward) => {
 
 ReactDOM.render(
   <AppContainer errorReporter={CustomErrorReporter}>
-    <Deck
-      transition={[]}
-      transitionDuration={0}
-      theme={theme}
-      progress="number"
-    >
+    <Deck transition={[]} transitionDuration={0} theme={theme} progress="bar">
       {slides.map((S, i) => {
         let transition = transitions[i] || null;
         return <S transition={transition} key={`slide-${i}`} />;
@@ -52,7 +47,7 @@ if (module.hot) {
           transition={[]}
           transitionDuration={0}
           theme={newTheme}
-          progress="number"
+          progress="bar"
         >
           {newSlides.map((S, i) => {
             let transition = transitions[i] || null;

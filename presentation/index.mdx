@@ -1,4 +1,4 @@
-import { Layout, Image, Appear, Fit, Fill, Heading, Link, Table, TableHeader, TableHeaderItem, TableBody, TableRow, TableItem } from 'spectacle';
+import { Layout, Image, Appear, Fit, Fill, Heading, Link, Table, TableHeader, TableHeaderItem, TableBody, TableRow, TableItem, Text, S } from 'spectacle';
 import { DarkSlide, CodeSlide } from './slides';
 import arex from '../assets/arex.jpg';
 import cover from '../assets/cover.jpg';
@@ -47,11 +47,11 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 
 <Layout>
   <Fill style={{ margin: "auto" }}>
-    <Heading>My username on Connpass is "globophobe".</Heading>
+    <Heading size={3}>My username on Connpass is "globophobe".</Heading>
     <Heading size={4}>Connpassのユーザ名は「globophobe」です。</Heading>
   </Fill>
   <Fill>
-    <Image style={{ borderRadius: "35px", marginLeft: "35px" }} src={arex} />
+    <Image style={{ borderRadius: "35px", marginLeft: "1em" }} src={arex} />
   </Fill>
 </Layout>
 
@@ -74,7 +74,7 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
   </Fill>
   <Fill>
     <Link href="https://www.amazon.co.jp/Advances-Financial-Machine-Learning-Marcos/dp/1119482089/">
-      <Image style={{ height: "96vh", borderRadius: "10px", marginLeft: "auto", marginRight: "auto" }} src={cover} />
+      <Image style={{ height: "95vh", borderRadius: "10px", marginLeft: "1.5em" }} src={cover} />
     </Link>
   </Fill>
 </Layout>
@@ -88,7 +88,7 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
   </Fill>
   <Fill>
       <Link href="https://www.amazon.co.jp/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%8A%E3%83%B3%E3%82%B9%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92-%E3%83%9E%E3%83%AB%E3%82%B3%E3%82%B9%E3%83%BB%E3%83%AD%E3%83%9A%E3%82%B9%E3%83%BB%E3%83%87%E3%83%BB%E3%83%97%E3%83%A9%E3%83%89/dp/4322134637/">
-      <Image style={{ height: "96vh", borderRadius: "10px", marginLeft: "auto", marginRight: "auto" }} src={coverJapanese} />
+      <Image style={{ height: "95vh", borderRadius: "10px", marginLeft: "1.5em" }} src={coverJapanese} />
     </Link>
   </Fill>
 </Layout>
@@ -97,13 +97,13 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 
 <Layout>
   <Fill style={{ margin: "auto" }}>
-    <Heading size={4}>
+    <Heading size={5}>
       The author Marcos Lopez de Prado was named <Link href="https://jpm.pm-research.com/quant-of-2019">Quant of 2019</Link> by the <Link href="https://jpm.pm-research.com/">Journal of Portfolio Management</Link>.
     </Heading>
-    <Heading size={5}>著者は、JPMにより「クォント オブ ザ イヤー」に選ばれました。</Heading>
+    <Heading size={6}>JPMにより「クォント オブ ザ イヤー」に選ばれました。</Heading>
   </Fill>
   <Fill>
-    <Image style={{ height: "80vh", borderRadius: "35px", marginLeft: "35px" }} src={marcos} />
+    <Image style={{ height: "65vmin", borderRadius: "35px", marginLeft: "1em" }} src={marcos} />
   </Fill>
 </Layout>
 
@@ -141,7 +141,7 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 
 <Layout>
   <Fill style={{ margin: "auto" }}>
-    <Heading>
+    <Heading size={2}>
       However, it is provided free by some Bitcoin exchanges.
     </Heading>
     <Heading size={3}>
@@ -149,7 +149,7 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
     </Heading>
   </Fill>
   <Fill>
-    <Image style={{ borderRadius: "35px", marginTop: "50%", marginBottom: "50%", marginLeft: "35px" }} src={bitcoin} />
+    <Image style={{ borderRadius: "35px", marginTop: "50%", marginBottom: "-50%", marginLeft: "0.75em" }} src={bitcoin} />
   </Fill>
 </Layout>
 
@@ -161,7 +161,7 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 ---
 
 # In Chapter 3, labelling financial data is discussed.
-## 第3章では財務データ構造について
+## 第3章では財務データのラベル付けについて説明されています。
 
 ---
 
@@ -212,13 +212,13 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 
 ---
 
-# Lopez de Prado recommends calculating the upper and lower barriers with a point estimation of volatility... 
-## ボラティリティのポイント推定を計算して、そしてそのポイント推定を使って上バリアと下バリアの障壁を計算する事が勧められています。
+## Lopez de Prado recommends calculating the upper and lower barriers with a point estimation of volatility... 
+### ボラティリティのポイント推定を計算して、そしてのポイント推定で上バリアと下バリアの障壁を計算する事が勧められています。
 
 ---
 
 # ...which is the mean of the exponentially weighted moving standard deviation of returns.
-## ...そのポイント推定はリターンの指数加重移動標準偏差の平均です。
+## ...ポイント推定はリターンの指数加重移動標準偏差の平均です。
 
 ---
 
@@ -236,16 +236,17 @@ export default CodeSlide
 
 ```python
 def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
-		"""Estimate volatality with exponentially weighted moving standard deviation of returns."""
-		df = prices.index.searchsorted(prices.index - delta)
-		df = df[df > 0]
-		df = pd.Series(
-				prices.index[df - 1], 
-				index=prices.index[prices.shape[0]-df.shape[0]:]
-		)
-		df = prices.loc[df.index] / prices.loc[df.values].values - 1
-		df = df.ewm(span=span).std()
-		return df
+    """Estimate volatality with exponentially weighted moving standard deviation of returns."""
+    df = prices.index.searchsorted(prices.index - delta)
+    df = df[df > 0]
+    df = pd.Series(
+        prices.index[df - 1], 
+        index=prices.index[prices.shape[0] - df.shape[0]:]
+    )
+    diff = prices.loc[df.values].values - 1
+    df = prices.loc[df.index] / diff
+    df = df.ewm(span=span).std()
+    return df
 ```
 
 ---
@@ -285,7 +286,7 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# The *cusum_filter* is described as an "[improvement] over many popular financial indicators such as Bollinger bands... 
+## The *cusum_filter* is described as an "[improvement] over many popular financial indicators such as Bollinger bands... 
 ## * cusum_filter *は人気のある市場信号「ボリンジャーバンド」とかに対する[改善]として説明されています。
 
 ---
@@ -305,25 +306,25 @@ def cusum_filter(prices, threshold):
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>timestamp</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>target</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>touch</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>touch</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "4.5vmin" }}>2017-03-22 13:58:33.411609</TableItem>
-      <TableItem style={{ fontSize: "4.5vmin" }}>0.0662078</TableItem>
-      <TableItem style={{ fontSize: "4.5vmin" }}>2017-03-23 14:14:25.540570</TableItem>
+      <TableItem style={{ fontSize: "3.5vmin" }}>2017-03-22 13:58:33.411609</TableItem>
+      <TableItem style={{ fontSize: "3.5vmin" }}>0.0662078</TableItem>
+      <TableItem style={{ fontSize: "3.5vmin" }}>2017-03-23 14:14:25.540570</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem style={{ fontSize: "4.5vmin" }}>2017-07-21 02:25:36.397497</TableItem>
-      <TableItem style={{ fontSize: "4.5vmin" }}>0.0168957</TableItem>
-      <TableItem style={{ fontSize: "4.5vmin" }}>2017-07-21 03:04:44.531031</TableItem>
+      <TableItem style={{ fontSize: "3.5vmin" }}>2017-07-21 02:25:36.397497</TableItem>
+      <TableItem style={{ fontSize: "3.5vmin" }}>0.0168957</TableItem>
+      <TableItem style={{ fontSize: "3.5vmin" }}>2017-07-21 03:04:44.531031</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem style={{ fontSize: "4.5vmin" }}>2018-12-17 12:12:43.155227</TableItem>
-      <TableItem style={{ fontSize: "4.5vmin" }}>0.0141053</TableItem>
-      <TableItem style={{ fontSize: "4.5vmin" }}>2018-12-17 12:12:57.062203</TableItem>
+      <TableItem style={{ fontSize: "3.5vmin" }}>2018-12-17 12:12:43.155227</TableItem>
+      <TableItem style={{ fontSize: "3.5vmin" }}>0.0141053</TableItem>
+      <TableItem style={{ fontSize: "3.5vmin" }}>2018-12-17 12:12:57.062203</TableItem>
     </TableRow>
   </TableBody>
 </Table>
@@ -335,26 +336,26 @@ def cusum_filter(prices, threshold):
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>timestamp</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>target</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>return</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>label</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>label</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "5vmin" }}>2017-03-22 13:58:33.411609</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>2017-03-22 13:58:33.411609</TableItem>
       <TableItem style={{ fontSize: "5vmin" }}>0.066208</TableItem>
       <TableItem style={{ fontSize: "5vmin" }}>0.019608</TableItem>
       <TableItem style={{ fontSize: "5.5vmin" }}><strong>0</strong></TableItem>
     </TableRow>
     <TableRow>
-      <TableItem style={{ fontSize: "5vmin" }}>2017-07-21 02:25:36.397497</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>2017-07-21 02:25:36.397497</TableItem>
       <TableItem style={{ fontSize: "5vmin" }}>0.016896</TableItem>
       <TableItem style={{ fontSize: "5vmin" }}>-0.018248</TableItem>
       <TableItem style={{ fontSize: "5.5vmin" }}><strong>-1</strong></TableItem>
     </TableRow>
     <TableRow>
-      <TableItem style={{ fontSize: "5vmin" }}>2018-12-17 12:12:43.155227</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>2018-12-17 12:12:43.155227</TableItem>
       <TableItem style={{ fontSize: "5vmin" }}>0.014105</TableItem>
       <TableItem style={{ fontSize: "5vmin" }}>0.015244</TableItem>
       <TableItem style={{ fontSize: "5.5vmin" }}><strong>1</strong></TableItem>
@@ -369,14 +370,14 @@ def cusum_filter(prices, threshold):
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>timestamp</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>target</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>return</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>label</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>label</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "5.5vmin" }}>2017-03-22 13:58:33.411609</TableItem>
+      <TableItem style={{ fontSize: "4.75vmin" }}>2017-03-22 13:58:33.411609</TableItem>
       <TableItem style={{ fontSize: "5.5vmin" }}>0.066208</TableItem>
       <TableItem style={{ fontSize: "5.5vmin" }}>0.019608</TableItem>
       <TableItem style={{ fontSize: "5.5vmin" }}><strong>0</strong></TableItem>
@@ -391,14 +392,14 @@ def cusum_filter(prices, threshold):
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>timestamp</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>target</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>return</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>label</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>label</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "5.5vmin" }}>2017-07-21 02:25:36.397497</TableItem>
+      <TableItem style={{ fontSize: "4.75vmin" }}>2017-07-21 02:25:36.397497</TableItem>
       <TableItem style={{ fontSize: "5.5vmin" }}>0.016896</TableItem>
       <TableItem style={{ fontSize: "5.5vmin" }}>-0.018248</TableItem>
       <TableItem style={{ fontSize: "5.5vmin" }}><strong>-1</strong></TableItem>
@@ -413,14 +414,14 @@ def cusum_filter(prices, threshold):
 
 <Table>
   <TableHeader>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>timestamp</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>target</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>return</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "6vmin" }}>label</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>target</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>return</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>label</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem style={{ fontSize: "5.5vmin" }}>2018-12-17 12:12:43.155227</TableItem>
+      <TableItem style={{ fontSize: "4.75vmin" }}>2018-12-17 12:12:43.155227</TableItem>
       <TableItem style={{ fontSize: "5.5vmin" }}>0.014105</TableItem>
       <TableItem style={{ fontSize: "5.5vmin" }}>0.015244</TableItem>
       <TableItem style={{ fontSize: "5.5vmin" }}><strong>1</strong></TableItem>
@@ -500,44 +501,39 @@ def cusum_filter(prices, threshold):
 ---
 
 ### Data is close price and volume, XBTUSD $10000000 volume bars:
-### データはXBTUSDの終値とボリューム、$10000000のボリュームバー：
+#### データはXBTUSDの終値とボリューム、$10000000のボリュームバー：
 
 <Table>
   <TableHeader>
-    <TableHeaderItem>timestamp</TableHeaderItem>
-    <TableHeaderItem>close</TableHeaderItem>
-    <TableHeaderItem>volume</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>close</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>volume</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem>...</TableItem>
-      <TableItem>...</TableItem>
-      <TableItem>...</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>2020-01-14 18:13:02.951683</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>8858.5</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>10001522</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>2020-01-14 18:13:02.951683</TableItem>
-      <TableItem>8858.5</TableItem>
-      <TableItem>10001522</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>2020-01-15 01:07:18.109534</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>8730.0</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>10000005</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>2020-01-15 01:07:18.109534</TableItem>
-      <TableItem>8730.0</TableItem>
-      <TableItem>10000005</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>2020-01-15 04:06:15.848101</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>8651.0</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>10000340</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>2020-01-15 04:06:15.848101</TableItem>
-      <TableItem>8651.0</TableItem>
-      <TableItem>10000340</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>2020-01-15 13:57:39.592160</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>8878.0</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>10000444</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>2020-01-15 13:57:39.592160</TableItem>
-      <TableItem>8878.0</TableItem>
-      <TableItem>10000444</TableItem>
-    </TableRow>
-    <TableRow>
-      <TableItem>2020-01-15 16:03:29.038104</TableItem>
-      <TableItem>8725.5</TableItem>
-      <TableItem>10145705</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>2020-01-15 16:03:29.038104</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>8725.5</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>10145705</TableItem>
     </TableRow>
   </TableBody>
 </Table>
@@ -549,7 +545,6 @@ export default CodeSlide
 
 ```python
 from sklearn.linear_model import LogisticRegression
-from imblearn.over_sampling import SMOTE
 ```
 
 ```python
@@ -589,12 +584,12 @@ cm = confusion_matrix(true_binary, y_pred != 0)
 
 ---
 
-# Primary model: 
+### Primary model: 
 
-**859 false positives (FP), 0 false negatives (FN)**
+<Text><S type="bold">859 false positives (FP)</S></Text>
+<Text><S type="bold">0 false negatives (FN)</S></Text>
 
-
-<Image src={primaryCM} />
+<Image style={{ height: "65vh", marginTop: "0.5em" }} src={primaryCM} />
 
 ---
 
@@ -628,9 +623,10 @@ y_pred_meta = secondary_model.predict(x_test_meta)
 
 # Secondary model: 
 
-**472 false positives (FP), 132 false negatives (FN)**
+<Text><S type="bold">472 false positives (FP)</S></Text>
+<Text><S type="bold">132 false negatives (FN)</S></Text>
 
-<Image src={secondaryCM} />
+<Image style={{ height: "65vh", marginTop: "0.5em" }} src={secondaryCM} />
 
 ---
 
@@ -644,52 +640,52 @@ y_pred_meta = secondary_model.predict(x_test_meta)
 <Table>
   <TableHeader>
     <TableHeaderItem />
-    <TableHeaderItem>precision</TableHeaderItem>
-    <TableHeaderItem>recall</TableHeaderItem>
-    <TableHeaderItem>f1-score</TableHeaderItem>
-    <TableHeaderItem>support</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5vmin" }}>precision</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5vmin" }}>recall</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5vmin" }}>f1-score</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5vmin" }}>support</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
       <TableItem>&nbsp;</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>0.0</TableItem>
-      <TableItem>1.00</TableItem>
-      <TableItem>0.52</TableItem>
-      <TableItem><strong>0.69</strong></TableItem>
-      <TableItem>1756</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.0</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>1.00</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.52</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}><strong>0.69</strong></TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>1756</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>1.0</TableItem>
-      <TableItem>0.32</TableItem>
-      <TableItem>1.00</TableItem>
-      <TableItem><strong>0.48</strong></TableItem>
-      <TableItem>392</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>1.0</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.32</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>1.00</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}><strong>0.48</strong></TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>392</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>&nbsp;</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>&nbsp;</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>accuracy</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>accuracy</TableItem>
       <TableItem />
       <TableItem />
-      <TableItem>0.61</TableItem>
-      <TableItem>2148</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.61</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>2148</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>macro avg</TableItem>
-      <TableItem>0.66</TableItem>
-      <TableItem>0.76</TableItem>
-      <TableItem>0.59</TableItem>
-      <TableItem>2148</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>macro avg</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.66</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.76</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.59</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>2148</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>weighted avg</TableItem>
-      <TableItem>0.88</TableItem>
-      <TableItem>0.61</TableItem>
-      <TableItem>0.65</TableItem>
-      <TableItem>2148</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>weighted avg</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.88</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.61</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.65</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>2148</TableItem>
     </TableRow>
   </TableBody>
 </Table>
@@ -701,52 +697,52 @@ y_pred_meta = secondary_model.predict(x_test_meta)
 <Table>
   <TableHeader>
     <TableHeaderItem />
-    <TableHeaderItem>precision</TableHeaderItem>
-    <TableHeaderItem>recall</TableHeaderItem>
-    <TableHeaderItem>f1-score</TableHeaderItem>
-    <TableHeaderItem>support</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5vmin" }}>precision</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5vmin" }}>recall</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5vmin" }}>f1-score</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5vmin" }}>support</TableHeaderItem>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableItem>&nbsp;</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>&nbsp;</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>0.0</TableItem>
-      <TableItem>0.91</TableItem>
-      <TableItem>0.73</TableItem>
-      <TableItem><strong>0.81</strong></TableItem>
-      <TableItem>1756</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.0</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.91</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.73</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}><strong>0.81</strong></TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>1756</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>1.0</TableItem>
-      <TableItem>0.36</TableItem>
-      <TableItem>0.67</TableItem>
-      <TableItem><strong>0.47</strong></TableItem>
-      <TableItem>392</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>1.0</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.36</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.67</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}><strong>0.47</strong></TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>392</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>&nbsp;</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>&nbsp;</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>accuracy</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>accuracy</TableItem>
       <TableItem />
       <TableItem />
-      <TableItem>0.72</TableItem>
-      <TableItem>2148</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.72</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>2148</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>macro avg</TableItem>
-      <TableItem>0.63</TableItem>
-      <TableItem>0.70</TableItem>
-      <TableItem>0.64</TableItem>
-      <TableItem>2148</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>macro avg</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.63</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.70</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.64</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>2148</TableItem>
     </TableRow>
     <TableRow>
-      <TableItem>weighted avg</TableItem>
-      <TableItem>0.81</TableItem>
-      <TableItem>0.72</TableItem>
-      <TableItem>0.75</TableItem>
-      <TableItem>2148</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>weighted avg</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.81</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.72</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>0.75</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>2148</TableItem>
     </TableRow>
   </TableBody>
 </Table>
@@ -759,15 +755,15 @@ y_pred_meta = secondary_model.predict(x_test_meta)
 ---
 
 ### Lopez de Prado emphasizes that the primary model need not be an ML model. It could be the decisions of a discretionary trader.
-### プライマリモデルはMLモデルでわなくても良い事を強調されています。プライマリモデルは裁量的トレーダーの取引判断の可能性もあります。
+#### プライマリモデルはMLモデルでわなくても良い事を強調されています。プライマリモデルは裁量的トレーダーの取引判断の可能性もあります。
 
 
 ---
 
 <Layout>
   <Fill style={{ margin: "auto" }}>
-    <Heading size={4}>He doesn't say it, but the primary model could even be a monkey throwing darts. </Heading>
-    <Heading size={4}>彼は言わない事ですけれど、プライマリモデルはダーツを投げる猿の可能性もあります。</Heading>
+    <Heading size={5}>He doesn't say it, but the primary model could even be a monkey throwing darts. </Heading>
+    <Heading size={5}>彼は言わない事ですけれど、プライマリモデルはダーツを投げる猿の可能性もあります。</Heading>
   </Fill>
   <Fill>
     <Image style={{ borderRadius: "35px" }} src={monkeyThrowDarts} />

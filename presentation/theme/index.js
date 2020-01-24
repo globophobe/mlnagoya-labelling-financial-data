@@ -65,7 +65,7 @@ const theme = createTheme(
         color: "#111e6c"
       },
       codePane: {
-        fontSize: "3.75vmin"
+        fontSize: "3.5vmin"
       }
     }
   }
