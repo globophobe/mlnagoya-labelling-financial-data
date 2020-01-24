@@ -149,7 +149,7 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
     </Heading>
   </Fill>
   <Fill>
-    <Image style={{ borderRadius: "35px", marginTop: "50%", marginBottom: "-50%", marginLeft: "0.75em" }} src={bitcoin} />
+    <Image style={{ borderRadius: "35px", marginTop: "50%", marginBottom: "50%", marginLeft: "0.75em" }} src={bitcoin} />
   </Fill>
 </Layout>
 
@@ -157,6 +157,46 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 
 # My preference is data for the Bitmex XBTUSD perpetual future contract.
 ## 私はBitmexのXBTUSDの永続的な先物契約のデータにしました。
+
+---
+
+### Example data, XBTUSD $10000000 volume bars:
+#### サンプルデータ、XBTUSD $10000000のボリュームバー：
+
+<Table>
+  <TableHeader>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>timestamp</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>close price</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>volume</TableHeaderItem>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableItem style={{ fontSize: "5vmin" }}>2020-01-14 18:13:02.951683</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>8858.5</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>10001522</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem style={{ fontSize: "5vmin" }}>2020-01-15 01:07:18.109534</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>8730.0</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>10000005</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem style={{ fontSize: "5vmin" }}>2020-01-15 04:06:15.848101</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>8651.0</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>10000340</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem style={{ fontSize: "5vmin" }}>2020-01-15 13:57:39.592160</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>8878.0</TableItem>
+      <TableItem style={{ fontSize: "5vmin" }}>10000444</TableItem>
+    </TableRow>
+    <TableRow>
+      <TableItem style={{ fontSize: "4.5vmin" }}>2020-01-15 16:03:29.038104</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>8725.5</TableItem>
+      <TableItem style={{ fontSize: "4.5vmin" }}>10145705</TableItem>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ---
 
@@ -286,7 +326,7 @@ def cusum_filter(prices, threshold):
 
 ---
 
-## The *cusum_filter* is described as an "[improvement] over many popular financial indicators such as Bollinger bands... 
+## The *cusum_filter* is described as an [improvement] over many popular financial indicators such as Bollinger bands... 
 ## * cusum_filter *は人気のある市場信号「ボリンジャーバンド」とかに対する[改善]として説明されています。
 
 ---
@@ -301,7 +341,7 @@ def cusum_filter(prices, threshold):
 
 ---
 
-## These are some "triple-barrier" touches.
+## These are some triple-barrier touches.
 <Heading size={2} style={{ marginBottom: "0.5em" }}>「トリプルバリア」タッチです。</Heading>
 
 <Table>
@@ -500,46 +540,6 @@ def cusum_filter(prices, threshold):
 
 ---
 
-### Data is close price and volume, XBTUSD $10000000 volume bars:
-#### データはXBTUSDの終値とボリューム、$10000000のボリュームバー：
-
-<Table>
-  <TableHeader>
-    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>timestamp</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>close</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>volume</TableHeaderItem>
-  </TableHeader>
-  <TableBody>
-    <TableRow>
-      <TableItem style={{ fontSize: "5vmin" }}>2020-01-14 18:13:02.951683</TableItem>
-      <TableItem style={{ fontSize: "5vmin" }}>8858.5</TableItem>
-      <TableItem style={{ fontSize: "5vmin" }}>10001522</TableItem>
-    </TableRow>
-    <TableRow>
-      <TableItem style={{ fontSize: "5vmin" }}>2020-01-15 01:07:18.109534</TableItem>
-      <TableItem style={{ fontSize: "5vmin" }}>8730.0</TableItem>
-      <TableItem style={{ fontSize: "5vmin" }}>10000005</TableItem>
-    </TableRow>
-    <TableRow>
-      <TableItem style={{ fontSize: "5vmin" }}>2020-01-15 04:06:15.848101</TableItem>
-      <TableItem style={{ fontSize: "5vmin" }}>8651.0</TableItem>
-      <TableItem style={{ fontSize: "5vmin" }}>10000340</TableItem>
-    </TableRow>
-    <TableRow>
-      <TableItem style={{ fontSize: "5vmin" }}>2020-01-15 13:57:39.592160</TableItem>
-      <TableItem style={{ fontSize: "5vmin" }}>8878.0</TableItem>
-      <TableItem style={{ fontSize: "5vmin" }}>10000444</TableItem>
-    </TableRow>
-    <TableRow>
-      <TableItem style={{ fontSize: "4.5vmin" }}>2020-01-15 16:03:29.038104</TableItem>
-      <TableItem style={{ fontSize: "4.5vmin" }}>8725.5</TableItem>
-      <TableItem style={{ fontSize: "4.5vmin" }}>10145705</TableItem>
-    </TableRow>
-  </TableBody>
-</Table>
-
----
-
 export default CodeSlide
 
 
@@ -569,7 +569,7 @@ export default CodeSlide
 
 ```python
 def true_meta_labels(y_pred, y_test):
-    """Labels were 0, 1, and -1. Correctly predicted labels of 1 or -1 will be 1."""
+    """Labels were 0, 1, and -1. Correctly predicted labels of either 1 or -1 are true positive."""
     bin_label = np.zeros_like(y_pred)
     for i in range(y_pred.shape[0]):
         if y_pred[i] != 0 and (y_pred[i] * y_test[i]) > 0:
@@ -749,8 +749,8 @@ y_pred_meta = secondary_model.predict(x_test_meta)
 
 ---
 
-# Intuitively, it may be preferable to do nothing (FN), than be exposed to a loss (FP).
-## 直感的に、損失（FP）にさらされるよりも、何もしない（FN）方が望ましい場合があります。
+# Intuitively, it may be preferable not to trade (FN), than be exposed to a loss (FP).
+## 直感的に、損失（FP）にさらされるよりも、取引しない（FN）方が望ましい場合があります。
 
 ---
 
