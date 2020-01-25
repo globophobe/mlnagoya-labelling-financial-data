@@ -74,7 +74,7 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
   </Fill>
   <Fill>
     <Link href="https://www.amazon.co.jp/Advances-Financial-Machine-Learning-Marcos/dp/1119482089/">
-      <Image style={{ height: "95vh", borderRadius: "10px", marginLeft: "1.5em" }} src={cover} />
+      <Image style={{ height: "90vh", borderRadius: "10px", marginLeft: "1.5em" }} src={cover} />
     </Link>
   </Fill>
 </Layout>
@@ -88,7 +88,7 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
   </Fill>
   <Fill>
       <Link href="https://www.amazon.co.jp/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%8A%E3%83%B3%E3%82%B9%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92-%E3%83%9E%E3%83%AB%E3%82%B3%E3%82%B9%E3%83%BB%E3%83%AD%E3%83%9A%E3%82%B9%E3%83%BB%E3%83%87%E3%83%BB%E3%83%97%E3%83%A9%E3%83%89/dp/4322134637/">
-      <Image style={{ height: "95vh", borderRadius: "10px", marginLeft: "1.5em" }} src={coverJapanese} />
+      <Image style={{ height: "90vh", borderRadius: "10px", marginLeft: "1.5em" }} src={coverJapanese} />
     </Link>
   </Fill>
 </Layout>
@@ -141,7 +141,7 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 
 <Layout>
   <Fill style={{ margin: "auto" }}>
-    <Heading size={2}>
+    <Heading size={3}>
       However, it is provided free by some Bitcoin exchanges.
     </Heading>
     <Heading size={3}>
@@ -166,7 +166,7 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 <Table>
   <TableHeader>
     <TableHeaderItem style={{ fontSize: "5.5vmin" }}>timestamp</TableHeaderItem>
-    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>close price</TableHeaderItem>
+    <TableHeaderItem style={{ fontSize: "5.5vmin" }}>close</TableHeaderItem>
     <TableHeaderItem style={{ fontSize: "5.5vmin" }}>volume</TableHeaderItem>
   </TableHeader>
   <TableBody>
@@ -252,7 +252,7 @@ import monkeyThrowDarts from '../assets/monkey-throw-darts.png';
 
 ---
 
-## Lopez de Prado recommends calculating the upper and lower barriers with a point estimation of volatility... 
+### Lopez de Prado recommends calculating the upper and lower barriers with a point estimation of volatility... 
 ### ボラティリティのポイント推定を計算して、そしてのポイント推定で上バリアと下バリアの障壁を計算する事が勧められています。
 
 ---
@@ -291,8 +291,8 @@ def get_volatility(prices, span=100, delta=pd.Timedelta(hours=24)):
 
 ---
 
-#### The exponentially weighted moving standard deviation of returns:
-#### リターンの指数加重移動標準偏差：
+##### The exponentially weighted moving standard deviation of returns:
+##### リターンの指数加重移動標準偏差：
 
 <Image style={{ height: "50vmin" }} src={volatility} />
 
@@ -321,13 +321,13 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# The *cusum_filter* reduces the price series to only data points greater or less than the threshold.
+## The *cusum_filter* reduces the price series to only data points greater or less than the threshold.
 ## *cusum_filter* は、価格系列をしきい値よりも大きいまたは小さいポイントのみに減らします。
 
 ---
 
-## The *cusum_filter* is described as an [improvement] over many popular financial indicators such as Bollinger bands... 
-## * cusum_filter *は人気のある市場信号「ボリンジャーバンド」とかに対する[改善]として説明されています。
+### The *cusum_filter* is described as an [improvement] over many popular financial indicators such as Bollinger bands... 
+### * cusum_filter *は人気のある市場信号「ボリンジャーバンド」とかに対する[改善]として説明されています。
 
 ---
 
@@ -525,7 +525,7 @@ def cusum_filter(prices, threshold):
 
 ---
 
-# The primary model should have high recall, many true positives, and as few false positives as possible. 
+## The primary model should have high recall, many true positives, and as few false positives as possible. 
 ## プライマリモデルは、高い再現率しべきで、多くの真の陽性ようで、出来るだけ誤検知がすくないようです。
 
 ---
@@ -541,7 +541,6 @@ def cusum_filter(prices, threshold):
 ---
 
 export default CodeSlide
-
 
 ```python
 from sklearn.linear_model import LogisticRegression
@@ -762,11 +761,11 @@ y_pred_meta = secondary_model.predict(x_test_meta)
 
 <Layout>
   <Fill style={{ margin: "auto" }}>
-    <Heading size={5}>He doesn't say it, but the primary model could even be a monkey throwing darts. </Heading>
-    <Heading size={5}>彼は言わない事ですけれど、プライマリモデルはダーツを投げる猿の可能性もあります。</Heading>
+    <Heading size={6}>He doesn't say it, but the primary model could even be a monkey throwing darts. </Heading>
+    <Heading size={6}>彼は言わない事ですけれど、プライマリモデルはダーツを投げる猿の可能性もあります。</Heading>
   </Fill>
   <Fill>
-    <Image style={{ borderRadius: "35px" }} src={monkeyThrowDarts} />
+    <Image style={{ borderRadius: "35px", marginLeft: "0.75em" }} src={monkeyThrowDarts} />
   </Fill>
 </Layout>
 
