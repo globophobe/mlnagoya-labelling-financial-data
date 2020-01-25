@@ -31,32 +31,32 @@ const theme = createTheme(
     components: {
       heading: {
         h1: {
-          fontSize: "9vmin",
-          lineHeight,
-          marginBottom
-        },
-        h2: {
           fontSize: "8.5vmin",
           lineHeight,
           marginBottom
         },
-        h3: {
+        h2: {
           fontSize: "8vmin",
           lineHeight,
           marginBottom
         },
-        h4: {
+        h3: {
           fontSize: "7.5vmin",
           lineHeight,
           marginBottom
         },
-        h5: {
+        h4: {
           fontSize: "7vmin",
           lineHeight,
           marginBottom
         },
-        h6: {
+        h5: {
           fontSize: "6.5vmin",
+          lineHeight,
+          marginBottom
+        },
+        h6: {
+          fontSize: "6vmin",
           lineHeight,
           marginBottom
         }
